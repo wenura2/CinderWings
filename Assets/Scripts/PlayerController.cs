@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
     {
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
-        myAnimator.SetFloat("moveX", movement.x);
-        myAnimator.SetFloat("moveY", movement.y);
+        // myAnimator.SetFloat("moveX", movement.x);
+        // myAnimator.SetFloat("moveY", movement.y);
         myAnimator.SetBool("isMoving", movement != Vector2.zero);
 
         FaceMouseOnlyIfMoved();
