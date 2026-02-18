@@ -6,6 +6,8 @@ public class EggMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
+    public float acceleration = 40f;
+    public float deceleration = 0.8f;
 
     private Rigidbody2D rb;
     private Vector2 inputDirection;
@@ -17,11 +19,12 @@ public class EggMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
+        rb.drag = deceleration;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
         animController = GetComponent<EggAnimationController>();
         controls = new EggControls();
 
-        // keep animator aware of max speed for normalization
         if (animController != null)
             animController.maxSpeed = moveSpeed;
     }
@@ -31,16 +34,17 @@ public class EggMovement : MonoBehaviour
 
     void Update()
     {
-        // Read input in Update for responsiveness
         inputDirection = controls.Player.Move.ReadValue<Vector2>();
     }
 
     void FixedUpdate()
     {
-        // Apply physics velocity
-        rb.velocity = inputDirection * moveSpeed;
+        Vector2 targetVelocity = inputDirection * moveSpeed;
+        rb.velocity = Vector2.MoveTowards(rb.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
-        // Send the actual physics velocity to the animation controller (physics-accurate)
+        if (rb.velocity.magnitude > moveSpeed)
+            rb.velocity = rb.velocity.normalized * moveSpeed;
+
         if (animController != null)
             animController.SetVelocity(rb.velocity);
     }
