@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -41,3 +41,32 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BG Color
+    uniqueID: 215069157
+    locked: 0
+  - name: Water Form
+    uniqueID: 3405128601
+    locked: 0
+  - name: Ground
+    uniqueID: 3695477371
+    locked: 0
+  - name: Non Collision Low
+    uniqueID: 3041741907
+    locked: 0
+  - name: Collision Low
+    uniqueID: 3452090515
+    locked: 0
+  - name: None Collision High
+    uniqueID: 2609378341
+    locked: 0
+  - name: Collision High
+    uniqueID: 2356209409
+    locked: 0
+  - name: Player
+    uniqueID: 115329247
+    locked: 0
+  - name: Objects
+    uniqueID: 833959747
+    locked: 0
+  m_RenderingLayers:
+  - Default
