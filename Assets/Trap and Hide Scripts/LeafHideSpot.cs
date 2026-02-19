@@ -2,17 +2,20 @@ using UnityEngine;
 
 public class LeafHideSpot : MonoBehaviour
 {
-    private Animator playerAnimator;
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player entered leaf trigger");
-            playerAnimator = other.GetComponent<Animator>();
+
+            Animator playerAnimator = other.GetComponent<Animator>();
+            EggHealth egg = other.GetComponent<EggHealth>();
 
             if (playerAnimator != null)
-                playerAnimator.SetBool("Hidden", true); // fade out
+                playerAnimator.SetBool("Hidden", true);
+
+            if (egg != null)
+                egg.isHidden = true;  // 🔥 Important
         }
     }
 
@@ -22,8 +25,14 @@ public class LeafHideSpot : MonoBehaviour
         {
             Debug.Log("Player exited leaf trigger");
 
+            Animator playerAnimator = other.GetComponent<Animator>();
+            EggHealth egg = other.GetComponent<EggHealth>();
+
             if (playerAnimator != null)
-                playerAnimator.SetBool("Hidden", false); // fade back in
+                playerAnimator.SetBool("Hidden", false);
+
+            if (egg != null)
+                egg.isHidden = false;  // 🔥 Important
         }
     }
 }
