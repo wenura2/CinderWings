@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 607414899280259083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.397, y: 0.09, z: 0}
-  m_LocalScale: {x: 1.5459, y: 1.5459, z: 1}
+  m_LocalPosition: {x: -3.29, y: -2.48, z: 0}
+  m_LocalScale: {x: 2.0514092, y: 2.0514092, z: 1.327}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966785175
-  m_SortingLayer: 8
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -9069723417043114871, guid: 3974238adf8a646d6a2b3ad76793ae41, type: 3}
@@ -143,6 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a8bd23c78c11843a5fe92ff0dc847a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeafHideSpot
+  healAmountPerTick: 1
+  healTickSeconds: 0.6
+  fullyHealedBool: FullyHealed
+  healingEffectPrefab: {fileID: 2625410597255360556, guid: 441ed55201789e94ebe435f61866acb1, type: 3}
+  effectOffset: {x: 0, y: 0.6, z: 0}
 --- !u!95 &7249830510327769911
 Animator:
   serializedVersion: 7

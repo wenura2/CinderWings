@@ -14,6 +14,8 @@ public class EggMovement : MonoBehaviour
     private EggAnimationController animController;
     private EggControls controls;
 
+    private bool isDead = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,11 +36,20 @@ public class EggMovement : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+        {
+            inputDirection = Vector2.zero;
+            return;
+        }
+
         inputDirection = controls.Player.Move.ReadValue<Vector2>();
     }
 
     void FixedUpdate()
     {
+        if (isDead)
+            return;
+
         Vector2 targetVelocity = inputDirection * moveSpeed;
         rb.velocity = Vector2.MoveTowards(rb.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
@@ -47,5 +58,24 @@ public class EggMovement : MonoBehaviour
 
         if (animController != null)
             animController.SetVelocity(rb.velocity);
+    }
+
+    // ✅ Call this when the egg dies
+    public void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        inputDirection = Vector2.zero;
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.simulated = false; // ✅ hard stop: no physics movement possible
+        }
+
+        if (animController != null)
+            animController.SetVelocity(Vector2.zero);
     }
 }

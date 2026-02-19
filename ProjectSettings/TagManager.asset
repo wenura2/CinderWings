@@ -68,5 +68,8 @@ TagManager:
   - name: Trees
     uniqueID: 966785175
     locked: 0
+  - name: VFX
+    uniqueID: 3993951661
+    locked: 0
   m_RenderingLayers:
   - Default

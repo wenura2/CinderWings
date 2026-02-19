@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class EggHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHits = 4;
-    [SerializeField] private int currentHits = 0; // Visible in Inspector
+    [SerializeField] private int currentHits = 0;
 
     [Header("Invincibility")]
     public float invincibleTime = 0.6f;
@@ -17,19 +18,13 @@ public class EggHealth : MonoBehaviour
     [Header("Damage Feedback")]
     public Color flashColor = Color.red;
     public float flashDuration = 0.15f;
-    private Color originalColor;
-    private SpriteRenderer spriteRenderer;
 
     [Header("Camera Shake")]
     public CameraShake cameraShake;
     public float shakeDuration = 0.2f;
     public float shakeMagnitude = 0.1f;
 
-    [Header("Animation")]
-    public Animator animator;
-
     [Header("Knockback")]
-    public Rigidbody2D rb;
     public float knockbackForce = 2f;
 
     [Header("Hit Freeze")]
@@ -40,51 +35,52 @@ public class EggHealth : MonoBehaviour
 
     private bool isDead = false;
 
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private EggMovement eggMovement;
+
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer) originalColor = spriteRenderer.color;
+        animator = GetComponent<Animator>();
+        eggMovement = GetComponent<EggMovement>();
 
-        if (!rb) rb = GetComponent<Rigidbody2D>();
+        if (spriteRenderer)
+            originalColor = spriteRenderer.color;
     }
 
+    // =========================
+    // DAMAGE
+    // =========================
     public void TakeDamage(int amount, Vector2 hitDirection)
     {
-        Debug.Log("Egg TakeDamage called");
+        if (animator)
+    animator.SetBool("FullyHealed", false);
 
-        if (isDead)
-        {
-            Debug.Log("Egg already dead");
+        if (isDead || isInvincible)
             return;
-        }
-
-        if (isInvincible)
-        {
-            Debug.Log("Egg is invincible - damage ignored");
-            return;
-        }
 
         currentHits += amount;
         currentHits = Mathf.Clamp(currentHits, 0, maxHits);
 
-        Debug.Log("Egg Hits: " + currentHits + " / " + maxHits);
-
-        if (animator)
-            animator.SetInteger("FractureLevel", currentHits);
+        UpdateFractureVisual();
 
         if (spriteRenderer)
             StartCoroutine(DamageFlash());
 
-        if (cameraShake != null)
+        if (cameraShake)
             StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
 
-        if (rb != null && hitDirection != Vector2.zero)
+        if (rb && hitDirection != Vector2.zero)
         {
             rb.velocity = Vector2.zero;
             rb.AddForce(hitDirection.normalized * knockbackForce, ForceMode2D.Impulse);
         }
 
-        if (hitFreezeDuration > 0f)
+        if (hitFreezeDuration > 0)
             StartCoroutine(HitFreeze());
 
         if (currentHits >= maxHits)
@@ -93,21 +89,31 @@ public class EggHealth : MonoBehaviour
             StartCoroutine(InvincibilityRoutine());
     }
 
-    private IEnumerator HitFreeze()
+    // =========================
+    // HEAL (used by bushes)
+    // =========================
+    public void Heal(int amount)
     {
-        float originalTimeScale = Time.timeScale;
-        Time.timeScale = 0f;
+        if (isDead) return;
 
-        yield return new WaitForSecondsRealtime(hitFreezeDuration);
+        currentHits -= amount;
+        currentHits = Mathf.Clamp(currentHits, 0, maxHits);
 
-        Time.timeScale = originalTimeScale;
+        UpdateFractureVisual();
     }
 
-    private IEnumerator InvincibilityRoutine()
+    public bool IsFullyHealed()
     {
-        isInvincible = true;
-        yield return new WaitForSeconds(invincibleTime);
-        isInvincible = false;
+        return currentHits <= 0;
+    }
+
+    // =========================
+    // VISUAL UPDATE
+    // =========================
+    private void UpdateFractureVisual()
+    {
+        if (animator)
+            animator.SetInteger("FractureLevel", currentHits);
     }
 
     private IEnumerator DamageFlash()
@@ -125,12 +131,31 @@ public class EggHealth : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    private IEnumerator InvincibilityRoutine()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibleTime);
+        isInvincible = false;
+    }
+
+    private IEnumerator HitFreeze()
+    {
+        float originalTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+
+        yield return new WaitForSecondsRealtime(hitFreezeDuration);
+
+        Time.timeScale = originalTimeScale;
+    }
+
+    // =========================
+    // DEATH
+    // =========================
     private void Die()
     {
         if (isDead) return;
 
         isDead = true;
-        Debug.Log("Egg destroyed!");
 
         if (animator)
             animator.SetTrigger("Death");
@@ -138,22 +163,24 @@ public class EggHealth : MonoBehaviour
         if (rb)
             rb.velocity = Vector2.zero;
 
-        StartCoroutine(DestroyAfterDelay(destroyDelay));
+        if (eggMovement)
+            eggMovement.Die(); // 🔥 stops all movement
+
+        StartCoroutine(DestroyAfterDelay());
     }
 
-    private IEnumerator DestroyAfterDelay(float delay)
+    private IEnumerator DestroyAfterDelay()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(destroyDelay);
         Destroy(gameObject);
     }
 
 #if UNITY_EDITOR
     void OnGUI()
     {
-        // Debug UI on screen
-        GUI.Label(new Rect(10, 10, 200, 30), "Egg Hits: " + currentHits + "/" + maxHits);
-        GUI.Label(new Rect(10, 30, 200, 30), "Hidden: " + isHidden);
-        GUI.Label(new Rect(10, 50, 200, 30), "Invincible: " + isInvincible);
+        GUI.Label(new Rect(10, 10, 200, 25), $"Egg Hits: {currentHits}/{maxHits}");
+        GUI.Label(new Rect(10, 30, 200, 25), $"Hidden: {isHidden}");
+        GUI.Label(new Rect(10, 50, 200, 25), $"Invincible: {isInvincible}");
     }
 #endif
 }
