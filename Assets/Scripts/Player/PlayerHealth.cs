@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Hurt Settings")]
     public float hurtDuration = 0.5f;
-    public float invincibleDuration = 1f;   // brief invincibility after getting hit
+    public float invincibleDuration = 1f;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -28,7 +28,6 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        // Ignore damage if dead or invincible
         if (isDead || isInvincible) return;
 
         currentHealth -= amount;
@@ -37,11 +36,10 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player HP: " + currentHealth + "/" + maxHealth);
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
         else
         {
+            StopAllCoroutines();
             StartCoroutine(HurtRoutine());
         }
     }
@@ -49,19 +47,31 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator HurtRoutine()
     {
         isInvincible = true;
-
-        // Play hurt animation
         animator.SetBool("isHurt", true);
 
-        // Flash the sprite red
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(hurtDuration);
-        spriteRenderer.color = Color.white;
+        // Flash red 3 times
+        for (int i = 0; i < 3; i++)
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+        }
 
         animator.SetBool("isHurt", false);
 
-        // Brief invincibility after hurt so enemy can't spam damage
-        yield return new WaitForSeconds(invincibleDuration - hurtDuration);
+        // Remaining invincibility subtle blink
+        float elapsed = 0f;
+        float remainingTime = invincibleDuration - 0.6f;
+        while (elapsed < remainingTime)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.PingPong(elapsed * 8f, 1f);
+            spriteRenderer.color = new Color(1f, 1f, 1f, Mathf.Clamp(alpha, 0.3f, 1f));
+            yield return null;
+        }
+
+        spriteRenderer.color = Color.white;
         isInvincible = false;
     }
 
@@ -74,19 +84,16 @@ public class PlayerHealth : MonoBehaviour
 
         animator.SetBool("isDead", true);
 
-        // Disable player control
         if (playerController != null)
             playerController.enabled = false;
 
-        // Disable physics
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
-            rb.isKinematic = true;
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
-        // After death animation finishes, you can reload scene or show game over
         StartCoroutine(DeathRoutine());
     }
 
@@ -94,7 +101,6 @@ public class PlayerHealth : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        // Fade out sprite
         float t = 0;
         Color c = spriteRenderer.color;
         while (t < 1f)
@@ -104,11 +110,10 @@ public class PlayerHealth : MonoBehaviour
             yield return null;
         }
 
-        // OPTION A: Reload scene
+        // Uncomment to reload scene on death:
         // UnityEngine.SceneManagement.SceneManager.LoadScene(
         //     UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
-        // OPTION B: Just disable
         gameObject.SetActive(false);
     }
 

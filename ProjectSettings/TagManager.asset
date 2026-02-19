@@ -65,17 +65,14 @@ TagManager:
   - name: None Collision High
     uniqueID: 2609378341
     locked: 0
-  - name: BackGround
-    uniqueID: 420670991
+  - name: Ground Level 2
+    uniqueID: 3538768995
     locked: 0
   - name: Player
     uniqueID: 115329247
     locked: 0
   - name: Objects
     uniqueID: 833959747
-    locked: 0
-  - name: Foreground
-    uniqueID: 1189323569
     locked: 0
   m_RenderingLayers:
   - Default
