@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - Fire
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - PlayerProjectile
+  - EnemyProjectile
+  - Environment
   - 
   - 
   - 
@@ -65,11 +65,14 @@ TagManager:
   - name: Player
     uniqueID: 3233830955
     locked: 0
+  - name: Enemy
+    uniqueID: 2392742363
+    locked: 0
   - name: Collision
     uniqueID: 4047526657
     locked: 0
-  - name: Enemy
-    uniqueID: 2392742363
+  - name: 
+    uniqueID: 1345493371
     locked: 0
   m_RenderingLayers:
   - Default

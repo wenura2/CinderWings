@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class FireProjectile : MonoBehaviour
 {
+    [Header("Projectile Settings")]
     public float speed = 10f;
+    public int damage = 100;   // enough to kill enemy in one hit
+    public float lifeTime = 3f;
+
     private Vector2 direction;
 
     public void SetDirection(Vector2 dir)
@@ -20,6 +24,17 @@ public class FireProjectile : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, lifeTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Check if we hit an enemy
+        EnemyHealth enemy = collision.GetComponent<EnemyHealth>();
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);   // apply damage
+            Destroy(gameObject);        // fire disappears after hit
+        }
     }
 }
