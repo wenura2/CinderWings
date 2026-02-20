@@ -69,6 +69,7 @@ public class HeartManager : MonoBehaviour
             heartsUI.SetHearts(0);
     }
 
+    // ORIGINAL method (unchanged behavior)
     public void RegisterCollected()
     {
         collected++;
@@ -80,6 +81,30 @@ public class HeartManager : MonoBehaviour
 
         if (collected >= heartsToWin)
             Win();
+    }
+
+    // NEW overload: remove from radar list then call original method
+    public void RegisterCollected(Vector3 heartWorldPos)
+    {
+        const float removeDistance = 0.2f;
+
+        int closestIndex = -1;
+        float closestDist = float.MaxValue;
+
+        for (int i = 0; i < spawnedPositions.Count; i++)
+        {
+            float d = Vector2.Distance(heartWorldPos, spawnedPositions[i]);
+            if (d < closestDist)
+            {
+                closestDist = d;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex != -1 && closestDist <= removeDistance)
+            spawnedPositions.RemoveAt(closestIndex);
+
+        RegisterCollected(); // call the original increment/UI/win logic
     }
 
     private void Win()
@@ -187,5 +212,10 @@ public class HeartManager : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    public List<Vector3> GetHeartPositions()
+    {
+        return spawnedPositions;
     }
 }

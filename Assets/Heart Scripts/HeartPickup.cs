@@ -19,7 +19,7 @@ public class HeartPickup : MonoBehaviour
         StartCoroutine(PlayCollectEffect());
 
         if (manager != null)
-            manager.RegisterCollected();
+        manager.RegisterCollected(transform.position);
 
         // Hide heart immediately
         GetComponent<SpriteRenderer>().enabled = false;
