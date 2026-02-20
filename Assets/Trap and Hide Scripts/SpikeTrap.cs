@@ -4,9 +4,9 @@ using System.Collections;
 public class SpikeTrap : MonoBehaviour
 {
     [Header("Timing")]
-    public float warningDelay = 0.5f;     // delay before spikes rise
-    public float activeDuration = 0.6f;   // how long spikes stay up
-    public float resetDelay = 0.8f;       // cooldown before next trigger
+    public float warningDelay = 0.5f;
+    public float activeDuration = 0.6f;
+    public float resetDelay = 0.8f;
 
     [Header("Damage")]
     public bool dealFullDamage = true;
@@ -16,6 +16,9 @@ public class SpikeTrap : MonoBehaviour
 
     private Animator animator;
 
+    private bool playerInside = false;
+    private Collider2D currentPlayer;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -23,52 +26,58 @@ public class SpikeTrap : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
-            return;
+        if (!other.CompareTag("Player")) return;
+
+        playerInside = true;
+        currentPlayer = other;
 
         if (!isActive && !isOnCooldown)
+            StartCoroutine(ActivateTrap());
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        if (other == currentPlayer)
         {
-            StartCoroutine(ActivateTrap(other));
+            playerInside = false;
+            currentPlayer = null;
         }
     }
 
-    private IEnumerator ActivateTrap(Collider2D player)
+    private IEnumerator ActivateTrap()
     {
         isOnCooldown = true;
 
-        // 🔥 Warning delay before spikes come up
+        // Warning delay
         yield return new WaitForSeconds(warningDelay);
 
-        // Activate spikes
+        // Raise spikes
         isActive = true;
+        if (animator) animator.SetBool("Active", true);
 
-        if (animator != null)
-            animator.SetBool("Active", true);
-
-        // Damage player
-        EggHealth egg = player.GetComponent<EggHealth>();
-        if (egg != null)
+        // ✅ Only damage if player is STILL inside
+        if (playerInside && currentPlayer != null)
         {
-            Vector2 hitDirection = (player.transform.position - transform.position).normalized;
-
-            if (dealFullDamage)
-                egg.TakeDamage(egg.maxHits, hitDirection);
-            else
-                egg.TakeDamage(1, hitDirection);
+            EggHealth egg = currentPlayer.GetComponent<EggHealth>();
+            if (egg != null)
+            {
+                Vector2 hitDirection = (currentPlayer.transform.position - transform.position).normalized;
+                int dmg = dealFullDamage ? egg.maxHits : 1;
+                egg.TakeDamage(dmg, hitDirection);
+            }
         }
 
         // Stay active
         yield return new WaitForSeconds(activeDuration);
 
         // Lower spikes
-        if (animator != null)
-            animator.SetBool("Active", false);
-
+        if (animator) animator.SetBool("Active", false);
         isActive = false;
 
         // Cooldown
         yield return new WaitForSeconds(resetDelay);
-
         isOnCooldown = false;
     }
 }
