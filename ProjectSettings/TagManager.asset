@@ -47,14 +47,14 @@ TagManager:
   - name: Water Animation
     uniqueID: 633935483
     locked: 0
-  - name: Walls
-    uniqueID: 2657755211
-    locked: 0
   - name: Level0ground
     uniqueID: 364435049
     locked: 0
   - name: Level!ground
     uniqueID: 1701050855
+    locked: 0
+  - name: Walls
+    uniqueID: 2657755211
     locked: 0
   - name: Level2ground
     uniqueID: 3894084689
