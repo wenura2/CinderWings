@@ -3,7 +3,7 @@ using UnityEngine;
 public class PawnAI : MonoBehaviour
 {
     [Header("Detection")]
-    public float detectionRange = 5f;    // Player this close → pawn runs away
+    public float detectionRange = 5f;
 
     [Header("Movement")]
     public float runSpeed = 3f;
@@ -70,7 +70,6 @@ public class PawnAI : MonoBehaviour
     // ─────────────────────────────────────────
     void HandlePatrol(float distanceToPlayer)
     {
-        // Player detected → run away
         if (distanceToPlayer <= detectionRange)
         {
             StopAllCoroutines();
@@ -80,7 +79,6 @@ public class PawnAI : MonoBehaviour
             return;
         }
 
-        // No patrol points → just idle
         if (patrolPoints == null || patrolPoints.Length == 0)
         {
             movement = Vector2.zero;
@@ -95,9 +93,10 @@ public class PawnAI : MonoBehaviour
             movement = direction * patrolSpeed;
 
             animator.SetBool("isRunning", true);
-            FlipSprite(direction.x);
 
-            // Reached patrol point
+            // Face the direction of movement during patrol
+            FaceDirection(direction.x);
+
             float distToPoint = Vector2.Distance(transform.position, target.position);
             if (distToPoint <= patrolReachDistance)
             {
@@ -124,7 +123,6 @@ public class PawnAI : MonoBehaviour
     // ─────────────────────────────────────────
     void HandleRunAway(float distanceToPlayer)
     {
-        // Player moved far away → back to patrol
         if (distanceToPlayer > detectionRange)
         {
             movement = Vector2.zero;
@@ -133,32 +131,36 @@ public class PawnAI : MonoBehaviour
             return;
         }
 
-        // Run AWAY from player (flipped direction)
+        // Direction AWAY from player
         Vector2 direction = (transform.position - player.position).normalized;
         movement = direction * runSpeed;
 
         animator.SetBool("isRunning", true);
-        FlipSprite(direction.x);
+
+        // Face the direction pawn is actually running (away from player)
+        // So we use direction.x directly — pawn looks where it runs
+        FaceDirection(direction.x);
     }
 
     // ─────────────────────────────────────────
     //  HELPERS
     // ─────────────────────────────────────────
-    void FlipSprite(float directionX)
+
+    // Pass the direction the character is MOVING
+    // and it will face that direction correctly
+    void FaceDirection(float directionX)
     {
         if (directionX < 0)
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;   // moving left → face left
         else if (directionX > 0)
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;  // moving right → face right
     }
 
     void OnDrawGizmosSelected()
     {
-        // Detection range - yellow
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
 
-        // Patrol path - cyan
         if (patrolPoints != null && patrolPoints.Length > 1)
         {
             Gizmos.color = Color.cyan;
