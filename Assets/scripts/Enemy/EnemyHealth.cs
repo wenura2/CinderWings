@@ -12,18 +12,20 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Color hurtColor = Color.red;
 
     [Header("Dust Animation")]
-    [SerializeField] private GameObject dustPrefab; // assign your DustParticles prefab here
+    [SerializeField] private GameObject dustPrefab;
 
     [Header("Knockback Settings")]
-    [SerializeField] private float knockbackForce = 5f;     // strength of push
-    [SerializeField] private float knockbackDuration = 0.2f; // how long before stopping
+    [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float knockbackDuration = 0.2f;
+
+    [Header("Death Settings")]
+    [SerializeField] private float fadeDuration = 1f; // how long to fade out
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private bool isDead = false;
     private Rigidbody2D rb;
 
-    // Store attacker position for dust direction
     private Vector2 lastAttackerPos;
 
     private void Start()
@@ -41,7 +43,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
 
-        lastAttackerPos = attackerPosition; // ✅ save attacker position
+        lastAttackerPos = attackerPosition;
 
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -50,7 +52,6 @@ public class EnemyHealth : MonoBehaviour
         {
             StartCoroutine(FlashHurt());
 
-            // Knockback
             if (rb != null)
             {
                 Vector2 knockDir = (transform.position - (Vector3)attackerPosition).normalized;
@@ -70,28 +71,20 @@ public class EnemyHealth : MonoBehaviour
         {
             spriteRenderer.color = hurtColor;
 
-            // Spawn dust animation at enemy position
             if (dustPrefab != null)
             {
                 GameObject dust = Instantiate(dustPrefab, transform.position, Quaternion.identity);
-
-                // ✅ Apply force in knockback direction
                 Rigidbody2D dustRb = dust.GetComponent<Rigidbody2D>();
                 if (dustRb != null)
                 {
                     Vector2 knockDir = (transform.position - (Vector3)lastAttackerPos).normalized;
-
-                    // Add a little random spread for natural look
                     Vector2 randomSpread = new Vector2(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f));
                     dustRb.AddForce((knockDir + randomSpread) * (knockbackForce * 0.5f), ForceMode2D.Impulse);
                 }
-
-                // ✅ Destroy dust at the same time as hurt flash
                 Destroy(dust, hurtDuration);
             }
 
             yield return new WaitForSeconds(hurtDuration);
-
             spriteRenderer.color = originalColor;
         }
     }
@@ -101,7 +94,7 @@ public class EnemyHealth : MonoBehaviour
         yield return new WaitForSeconds(knockbackDuration);
         if (rb != null)
         {
-            rb.linearVelocity = Vector2.zero; // stop knockback
+            rb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -118,12 +111,23 @@ public class EnemyHealth : MonoBehaviour
         ArcherEnemy archer = GetComponent<ArcherEnemy>();
         if (archer != null) archer.enabled = false;
 
-        StartCoroutine(DisappearAfterDelay(1.5f));
+        // Start fade‑out effect
+        StartCoroutine(FadeAndDisappear());
     }
 
-    private IEnumerator DisappearAfterDelay(float delay)
+    private IEnumerator FadeAndDisappear()
     {
-        yield return new WaitForSeconds(delay);
+        float elapsed = 0f;
+        Color startColor = spriteRenderer.color;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            spriteRenderer.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            yield return null;
+        }
+
         gameObject.SetActive(false);
     }
 }

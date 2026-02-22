@@ -33,7 +33,7 @@ public class ArcherEnemy : MonoBehaviour
         startPosition = transform.position;
         cooldownTimer = attackCooldown;
 
-        // Prevent accidental attack trigger at start
+        // ✅ Prevent accidental attack trigger at start
         animator.ResetTrigger("Attack");
     }
 
@@ -89,36 +89,30 @@ public class ArcherEnemy : MonoBehaviour
             if (breadcrumbs.Count > 0)
             {
                 Vector3 targetPos = breadcrumbs.Pop();
-                if (transform.position != targetPos)
-                {
-                    transform.position = Vector2.MoveTowards(
-                        transform.position,
-                        targetPos,
-                        moveSpeed * Time.deltaTime
-                    );
-                    isMoving = true; // Run while retracing breadcrumbs
-                }
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    targetPos,
+                    moveSpeed * Time.deltaTime
+                );
+                isMoving = true; // ✅ Run while retracing breadcrumbs
             }
             else
             {
                 // If no breadcrumbs left, go straight to start position
-                if (transform.position != startPosition)
-                {
-                    transform.position = Vector2.MoveTowards(
-                        transform.position,
-                        startPosition,
-                        moveSpeed * Time.deltaTime
-                    );
-                    isMoving = true; // Run until fully back
-                }
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    startPosition,
+                    moveSpeed * Time.deltaTime
+                );
+
+                if (Vector2.Distance(transform.position, startPosition) > 0.05f)
+                    isMoving = true; // ✅ Run until fully back
                 else
-                {
                     isMoving = false; // Idle once exactly at start
-                }
             }
         }
 
-        // Update Animator for Run/Idle
+        // ✅ Update Animator for Run/Idle
         animator.SetBool("isRunning", isMoving);
     }
 
