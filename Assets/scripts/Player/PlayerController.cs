@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         if (Mouse.current == null) return;
 
         // Right click triggers attack
-        if (Mouse.current.rightButton.wasPressedThisFrame && canAttack)
+        if (Mouse.current.leftButton.wasPressedThisFrame && canAttack)
         {
             Attack();
         }
