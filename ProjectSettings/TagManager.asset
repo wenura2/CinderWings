@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -47,25 +48,19 @@ TagManager:
   - name: Water Form
     uniqueID: 3405128601
     locked: 0
-  - name: Ground
+  - name: Ground1
     uniqueID: 3695477371
     locked: 0
   - name: Collision High
     uniqueID: 2356209409
     locked: 0
-  - name: Collision Low
+  - name: Ground2
     uniqueID: 3452090515
     locked: 0
   - name: Hill Boundary
     uniqueID: 107236301
     locked: 0
-  - name: Non Collision Low
-    uniqueID: 3041741907
-    locked: 0
-  - name: None Collision High
-    uniqueID: 2609378341
-    locked: 0
-  - name: Ground Level 2
+  - name: Ground3
     uniqueID: 3538768995
     locked: 0
   - name: Player

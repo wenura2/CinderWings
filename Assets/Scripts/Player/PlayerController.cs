@@ -45,17 +45,14 @@ public class PlayerController : MonoBehaviour
 
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
-        // Block movement animation while attacking
         if (!isAttacking)
             myAnimator.SetBool("isMoving", movement != Vector2.zero);
 
         FaceMouseOnlyIfMoved();
 
-        // Attack cooldown
         if (attackTimer > 0)
             attackTimer -= Time.deltaTime;
 
-        // Left click to attack
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             if (attackTimer <= 0 && !isAttacking)
@@ -67,11 +64,10 @@ public class PlayerController : MonoBehaviour
     {
         if (playerHealth != null && playerHealth.IsDead()) return;
 
-        // Stop moving while attacking
         if (!isAttacking)
             rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         else
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
     }
 
     IEnumerator AttackRoutine()
@@ -82,22 +78,31 @@ public class PlayerController : MonoBehaviour
         myAnimator.SetBool("isMoving", false);
         myAnimator.SetTrigger("Attack");
 
-        // Wait for attack animation wind-up before dealing damage
+        // Wait for attack wind-up
         yield return new WaitForSeconds(0.2f);
 
-        // Detect enemies in attack range
+        // Detect ALL enemies in attack range
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayer);
         foreach (Collider2D hit in hits)
         {
+            // Warrior 1 and Warrior 2 enemy
             EnemyHealth enemyHealth = hit.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(attackDamage);
                 Debug.Log("Hit enemy: " + hit.name);
             }
+
+            // Big Knight enemy
+            BigKnightHealth bkHealth = hit.GetComponent<BigKnightHealth>();
+            if (bkHealth != null)
+            {
+                bkHealth.TakeDamage(attackDamage);
+                Debug.Log("Hit Big Knight: " + hit.name);
+            }
         }
 
-        // Wait for rest of animation
+        // Wait for rest of attack animation
         yield return new WaitForSeconds(attackCooldown - 0.2f);
 
         isAttacking = false;
@@ -112,14 +117,11 @@ public class PlayerController : MonoBehaviour
         if (currentMousePosition != lastMousePosition)
         {
             Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
-
             mySpriteRenderer.flipX = currentMousePosition.x > playerScreenPosition.x;
-
             lastMousePosition = currentMousePosition;
         }
     }
 
-    // Visualize attack range in Scene view
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
