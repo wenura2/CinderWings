@@ -100,6 +100,13 @@ public class PlayerController : MonoBehaviour
                 bkHealth.TakeDamage(attackDamage);
                 Debug.Log("Hit Big Knight: " + hit.name);
             }
+            //big boss health
+            BigBossHealth bossHealth = hit.GetComponent<BigBossHealth>();
+if (bossHealth != null)
+{
+    bossHealth.TakeDamage(attackDamage);
+    Debug.Log("Hit Big Boss: " + hit.name);
+}
         }
 
         // Wait for rest of attack animation
@@ -107,6 +114,14 @@ public class PlayerController : MonoBehaviour
 
         isAttacking = false;
     }
+    // Breakable houses
+
+          // BreakableHouse house = hit.GetComponent<BreakableHouse>();
+          // if (house != null)
+            //  {
+             //   house.RegisterHit();
+             //    Debug.Log("Hit house: " + hit.name);
+             //  }
 
     private void FaceMouseOnlyIfMoved()
     {

@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7315438606249543470}
   - component: {fileID: 1426045529670590692}
   - component: {fileID: 4973347703819393371}
-  m_Layer: 0
+  - component: {fileID: 2555560940597627407}
+  m_Layer: 6
   m_Name: House1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 833959747
-  m_SortingLayer: 11
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 8e0b9a78c772b411fbc9b82e02303336, type: 3}
@@ -126,7 +127,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.00000011920929, y: -0.5097475}
+  m_Offset: {x: 0.03093636, y: -0.38881516}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -136,5 +137,31 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.4439118, y: 1.1278362}
+  m_Size: {x: 2.1132581, y: 1.5834422}
   m_EdgeRadius: 0
+--- !u!114 &2555560940597627407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710307355664803433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5c5ebf2f75928a4f8c7fe8e8aedf0a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitsToBreak: 3
+  dustFxPrefab: {fileID: 417119200785626594, guid: 5101e0f5a2e5f6c438b7d3d0fe530f12, type: 3}
+  fireFxPrefab: {fileID: 2861812113813818849, guid: 9b5df5fb8c1a7406c9abfcc7fe323d24, type: 3}
+  hitFxSpreadRadius: 0.3
+  hitFxDuration: 1
+  burnFxPrefab: {fileID: 2861812113813818849, guid: 9b5df5fb8c1a7406c9abfcc7fe323d24, type: 3}
+  smokeFxPrefab: {fileID: 417119200785626594, guid: 5101e0f5a2e5f6c438b7d3d0fe530f12, type: 3}
+  totalFxToSpawn: 5
+  spreadRadius: 2
+  delayBeforeFade: 0.5
+  fadeDuration: 3
+  cameraShake: {fileID: 0}
+  shakeAmplitude: 2
+  shakeDuration: 0.2

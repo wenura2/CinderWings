@@ -90,7 +90,7 @@ public class EnemyAI : MonoBehaviour
         if (!isAttacking)
             rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         else
-            rb.velocity = Vector2.zero; // Stop sliding during attack
+            rb.linearVelocity = Vector2.zero; // Stop sliding during attack
     }
 
     void StartAttack()
