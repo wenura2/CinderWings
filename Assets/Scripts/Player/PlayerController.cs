@@ -114,6 +114,14 @@ if (bossHealth != null)
 
         isAttacking = false;
     }
+    // Breakable houses
+
+          // BreakableHouse house = hit.GetComponent<BreakableHouse>();
+          // if (house != null)
+            //  {
+             //   house.RegisterHit();
+             //    Debug.Log("Hit house: " + hit.name);
+             //  }
 
     private void FaceMouseOnlyIfMoved()
     {

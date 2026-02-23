@@ -12,6 +12,13 @@ public class BigBossAI : MonoBehaviour
     return aliveTroops.Count > 0;
 }
 
+[Header("Aggro / Engage")]
+public float aggroRange = 12f;          // boss wakes up when player is within this
+public float disengageRange = 15f;      // optional: stop fighting if player runs far away
+public bool useDisengage = true;
+
+private bool isAggro = false;
+
     [Header("References")]
     public Transform player;
     public Rigidbody2D rb;
@@ -76,6 +83,24 @@ public class BigBossAI : MonoBehaviour
     private float nextSpawnAllowedTime;
     private readonly List<GameObject> aliveTroops = new();
 
+    bool UpdateAggro()
+{
+    if (!player) return false;
+
+    float dist = Vector2.Distance(rb.position, player.position);
+
+    if (!isAggro)
+    {
+        if (dist <= aggroRange) isAggro = true;
+    }
+    else
+    {
+        if (useDisengage && dist >= disengageRange) isAggro = false;
+    }
+
+    return isAggro;
+}
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -95,6 +120,13 @@ public class BigBossAI : MonoBehaviour
     {
         if (!player) return;
         if (health != null && health.IsDead()) { StopMove(); return; }
+
+        // Only fight when player is near
+if (!UpdateAggro())
+{
+    StopMove();
+    return;
+}
 
         CleanupTroopList();
         UpdateStageByHealth();

@@ -1,3 +1,9 @@
+// BigBossHealth.cs (ADD/UPDATE THESE PARTS)
+//
+// ✅ Smooth fade in/out boss health UI when player is near
+// - Uses CanvasGroup on the healthBarRoot
+// - No instant pop, it fades
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,53 +27,102 @@ public class BigBossHealth : MonoBehaviour
     public bool disableCollidersOnDeath = true;
     public bool disableRigidbodyOnDeath = true;
 
-    private bool dead;
+    [Header("Health Bar Visibility (Smooth Fade)")]
+    public Transform player;
+    public float showDistance = 10f;
 
-    private BigBossAI bossAI;
+    [Tooltip("Drag the parent GameObject that holds the slider/text (ex: BossHealthUI)")]
+    public GameObject healthBarRoot;
+
+    [Tooltip("Fade speed (higher = faster)")]
+    public float fadeSpeed = 6f;
+
+    [Tooltip("When fading out, hide the object after alpha gets below this")]
+    public float hideThreshold = 0.02f;
+
+    private CanvasGroup canvasGroup;
+    private bool dead;
 
     void Awake()
     {
-        bossAI = GetComponent<BigBossAI>();
         if (!animator) animator = GetComponent<Animator>();
 
         if (maxHealth <= 0) maxHealth = 1;
-
-        // If you didn't set currentHealth in inspector, start full
         if (currentHealth <= 0) currentHealth = maxHealth;
-
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        // Auto-find player by tag if not assigned
+        if (!player)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p) player = p.transform;
+        }
+
+        // Setup CanvasGroup for smooth fade
+        if (healthBarRoot)
+        {
+            canvasGroup = healthBarRoot.GetComponent<CanvasGroup>();
+            if (!canvasGroup) canvasGroup = healthBarRoot.AddComponent<CanvasGroup>();
+
+            // start hidden
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+            healthBarRoot.SetActive(false);
+        }
+
         UpdateUI();
     }
 
-    // PlayerController calls this (same pattern as EnemyHealth / BigKnightHealth)
-    public void TakeDamage(int amount)
-{
-    if (dead) return;
-    if (amount <= 0) return;
-
-    // ✅ INVINCIBILITY CHECK HERE
-    if (bossAI != null &&
-        bossAI.CurrentStage == BigBossAI.BossStage.Stage3 &&
-        bossAI.bossInvincibleWhileTroopsAlive &&
-        bossAI.HasAliveTroops())
+    void Update()
     {
-        return; // ignore damage
+        HandleHealthBarFade();
     }
 
-    currentHealth = Mathf.Max(0, currentHealth - amount);
+    void HandleHealthBarFade()
+    {
+        if (!healthBarRoot || !canvasGroup || !player) return;
 
-    if (animator && !string.IsNullOrWhiteSpace(hurtTrigger))
-        animator.SetTrigger(hurtTrigger);
+        bool shouldShow = !dead && Vector2.Distance(transform.position, player.position) <= showDistance;
 
-    UpdateUI();
+        float targetAlpha = shouldShow ? 1f : 0f;
 
-    if (currentHealth <= 0)
-        Die();
-}
+        // Ensure active while fading in/out
+        if (!healthBarRoot.activeSelf)
+            healthBarRoot.SetActive(true);
+
+        // Smooth alpha
+        canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, fadeSpeed * Time.deltaTime);
+
+        // Optional: toggle interaction (usually boss bars are non-interactable)
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        // When fully faded out, disable the object so it doesn't waste UI updates
+        if (!shouldShow && canvasGroup.alpha <= hideThreshold)
+        {
+            canvasGroup.alpha = 0f;
+            healthBarRoot.SetActive(false);
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (dead) return;
+        if (amount <= 0) return;
+
+        currentHealth = Mathf.Max(0, currentHealth - amount);
+
+        if (animator && !string.IsNullOrWhiteSpace(hurtTrigger))
+            animator.SetTrigger(hurtTrigger);
+
+        UpdateUI();
+
+        if (currentHealth <= 0)
+            Die();
+    }
 
     public bool IsDead() => dead;
-
-    public int GetCurrentHealth() => currentHealth;
 
     public float GetHealthPercent01()
     {
@@ -102,15 +157,13 @@ public class BigBossHealth : MonoBehaviour
 
         if (disableRigidbodyOnDeath)
         {
-            var rb = GetComponent<Rigidbody2D>();
-            if (rb) rb.linearVelocity = Vector2.zero;
+            var r = GetComponent<Rigidbody2D>();
+            if (r) r.linearVelocity = Vector2.zero;
         }
 
-        // Optional: Destroy after animation
-        // Destroy(gameObject, 3f);
+        // The fade logic will hide the bar smoothly because dead == true
     }
 
-    // Debug helper
     [ContextMenu("Debug: Damage 50")]
     void DebugDamage50() => TakeDamage(50);
 }
