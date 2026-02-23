@@ -594,13 +594,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableCrystal
   maxHealth: 150
+  healthBarPrefab: {fileID: 4168325073194213023, guid: 60e737cc4c7af274cb4f270990183b1b, type: 3}
   pulseSpeed: 5.11
   pulseStrength: 0.4
   lowHealthPercent: 0.4
   criticalHealthPercent: 0.2
-  normalPulseColor: {r: 0, g: 1, b: 1, a: 1}
+  normalPulseColor: {r: 0.8627452, g: 0.07843138, b: 0.92156863, a: 1}
   lowHealthPulseColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   criticalPulseColor: {r: 1, g: 0, b: 0, a: 1}
+  hitFxPrefab: {fileID: 2637010740898877400, guid: 9d1ca28fa829e2d47a639b9ff3b945d6, type: 3}
+  hitFxSpreadRadius: 0.1
+  hitFxCooldown: 0.05
   breakFxPrefabs:
   - {fileID: 6866753113859891878, guid: 16bb69cdcd80959499e9e490af685745, type: 3}
   - {fileID: 6866753113859891878, guid: 16bb69cdcd80959499e9e490af685745, type: 3}
@@ -612,6 +616,9 @@ MonoBehaviour:
   spreadRadius: 2.18
   delayBeforeFade: 0.25
   fadeDuration: 0.65
+  cameraShake: {fileID: 0}
+  shakeAmplitude: 2
+  shakeDuration: 0.15
   countForObjective: 1
 --- !u!50 &39147774464957516
 Rigidbody2D:

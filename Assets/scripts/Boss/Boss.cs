@@ -120,7 +120,7 @@ public class Boss : MonoBehaviour
     {
         if (!aggro || player == null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             if (bossAnim) bossAnim.SetWalking(false);
             return;
         }
@@ -130,7 +130,7 @@ public class Boss : MonoBehaviour
         // Stop when close enough (so we can attack)
         if (dist <= stopDistance)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             if (bossAnim) bossAnim.SetWalking(false);
 
             // Face player while idle
@@ -139,9 +139,9 @@ public class Boss : MonoBehaviour
         }
 
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
-        rb.velocity = dir * moveSpeed;
+        rb.linearVelocity = dir * moveSpeed;
 
-        if (bossAnim) bossAnim.SetWalking(rb.velocity.sqrMagnitude > 0.01f);
+        if (bossAnim) bossAnim.SetWalking(rb.linearVelocity.sqrMagnitude > 0.01f);
 
         UpdateFlipFromVelocity();
     }
@@ -162,7 +162,7 @@ public class Boss : MonoBehaviour
     {
         if (!spriteRenderer) return;
 
-        float vx = rb.velocity.x;
+        float vx = rb.linearVelocity.x;
         if (Mathf.Abs(vx) < flipDeadZone) return;
 
         bool movingRight = vx > 0f;
@@ -193,7 +193,7 @@ public class Boss : MonoBehaviour
         attackOnCooldown = true;
 
         // Stop to attack
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         if (bossAnim) bossAnim.SetWalking(false);
 
         // Play attack animation trigger
@@ -336,7 +336,7 @@ public class Boss : MonoBehaviour
 
         if (attackHitbox) attackHitbox.enabled = false;
 
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
         StopAllCoroutines();
 

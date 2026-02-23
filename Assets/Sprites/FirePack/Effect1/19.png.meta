@@ -109,12 +109,12 @@ TextureImporter:
       name: 19_0
       rect:
         serializedVersion: 2
-        x: 17
+        x: 14
         y: 17
-        width: 35
+        width: 38
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,55 +127,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: 19_1
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 40
-        width: 8
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 07772f1adae44d5b0800000000000000
-      internalID: -5344560350128605328
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 19_2
-      rect:
-        serializedVersion: 2
-        x: 14
-        y: 21
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cf6a97d41634e4d40800000000000000
-      internalID: 5570463874294589180
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b2968c22809168d498ae52729c29b2db
     internalID: 0
     vertices: []
     indices: 

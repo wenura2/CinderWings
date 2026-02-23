@@ -9,6 +9,10 @@ public class BreakableCrystal : MonoBehaviour
     private int currentHealth;
     private bool breaking = false;
 
+    [Header("Health Bar")]
+    public HealthBar healthBarPrefab; // assign prefab in Inspector
+    private HealthBar healthBarInstance;
+
     [Header("Pulse (Always On)")]
     public float pulseSpeed = 6f;
     [Range(0f, 1f)] public float pulseStrength = 0.4f;
@@ -23,7 +27,7 @@ public class BreakableCrystal : MonoBehaviour
     [Header("Hit FX (plays every hit)")]
     public GameObject hitFxPrefab;
     public float hitFxSpreadRadius = 0.1f;
-    public float hitFxCooldown = 0.05f; // prevents spam if multiple collisions in a frame
+    public float hitFxCooldown = 0.05f;
 
     [Header("Break FX Prefabs (Add 3–4 Here)")]
     public GameObject[] breakFxPrefabs;
@@ -51,6 +55,14 @@ public class BreakableCrystal : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
+
+        // Spawn health bar above crystal
+        if (healthBarPrefab != null)
+        {
+            healthBarInstance = Instantiate(healthBarPrefab, transform.position + Vector3.up * 1f, Quaternion.identity);
+            healthBarInstance.transform.SetParent(transform);
+            healthBarInstance.UpdateHealthBar(1f); // full health
+        }
     }
 
     private void Update()
@@ -74,10 +86,17 @@ public class BreakableCrystal : MonoBehaviour
     {
         if (breaking) return;
 
-        // ✅ hit explosion FX
         PlayHitFX();
 
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        // Update health bar
+        if (healthBarInstance != null)
+        {
+            float percent = (float)currentHealth / maxHealth;
+            healthBarInstance.UpdateHealthBar(percent);
+        }
 
         if (currentHealth <= 0)
             StartCoroutine(BreakRoutine());
@@ -100,11 +119,9 @@ public class BreakableCrystal : MonoBehaviour
     {
         breaking = true;
 
-        // ✅ shake camera on break
         if (cameraShake != null)
             cameraShake.Shake(shakeAmplitude, shakeDuration);
 
-        // ✅ Spawn break FX around crystal
         if (breakFxPrefabs != null && breakFxPrefabs.Length > 0)
         {
             for (int i = 0; i < totalFxToSpawn; i++)
@@ -120,13 +137,11 @@ public class BreakableCrystal : MonoBehaviour
             }
         }
 
-        // Count objective once
         if (countForObjective && CrystalObjectiveManager.Instance != null)
             CrystalObjectiveManager.Instance.RegisterCrystalBroken();
 
         yield return new WaitForSeconds(delayBeforeFade);
 
-        // Fade out crystal
         float elapsed = 0f;
         Color start = sr.color;
 
@@ -137,6 +152,9 @@ public class BreakableCrystal : MonoBehaviour
             sr.color = new Color(start.r, start.g, start.b, a);
             yield return null;
         }
+
+        if (healthBarInstance != null)
+            Destroy(healthBarInstance.gameObject);
 
         Destroy(gameObject);
     }

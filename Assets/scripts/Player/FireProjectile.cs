@@ -47,7 +47,7 @@ public class FireProjectile : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
-        rb.velocity = direction * speed;
+        rb.linearVelocity = direction * speed;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

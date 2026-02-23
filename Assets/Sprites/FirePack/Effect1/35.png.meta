@@ -103,37 +103,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 35_0
-      rect:
-        serializedVersion: 2
-        x: 14
-        y: 23
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c4b3eef61af09bdf0800000000000000
-      internalID: -164082725380277428
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: 35_1
       rect:
         serializedVersion: 2
-        x: 17
+        x: 13
         y: 18
-        width: 35
-        height: 32
+        width: 39
+        height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +128,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a0bdd5cdd4d48bf4bb1b1a4c28e1a2d9
     internalID: 0
     vertices: []
     indices: 
