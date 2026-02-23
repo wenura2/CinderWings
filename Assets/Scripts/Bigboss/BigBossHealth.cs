@@ -23,8 +23,11 @@ public class BigBossHealth : MonoBehaviour
 
     private bool dead;
 
+    private BigBossAI bossAI;
+
     void Awake()
     {
+        bossAI = GetComponent<BigBossAI>();
         if (!animator) animator = GetComponent<Animator>();
 
         if (maxHealth <= 0) maxHealth = 1;
@@ -38,23 +41,29 @@ public class BigBossHealth : MonoBehaviour
 
     // PlayerController calls this (same pattern as EnemyHealth / BigKnightHealth)
     public void TakeDamage(int amount)
+{
+    if (dead) return;
+    if (amount <= 0) return;
+
+    // ✅ INVINCIBILITY CHECK HERE
+    if (bossAI != null &&
+        bossAI.CurrentStage == BigBossAI.BossStage.Stage3 &&
+        bossAI.bossInvincibleWhileTroopsAlive &&
+        bossAI.HasAliveTroops())
     {
-        if (dead) return;
-        if (amount <= 0) return;
-
-        currentHealth = Mathf.Max(0, currentHealth - amount);
-
-        if (animator && !string.IsNullOrWhiteSpace(hurtTrigger))
-            animator.SetTrigger(hurtTrigger);
-
-        UpdateUI();
-
-        // Let BigBossAI handle stage switching itself (it reads health %)
-        // so we do NOT call any AI methods here.
-
-        if (currentHealth <= 0)
-            Die();
+        return; // ignore damage
     }
+
+    currentHealth = Mathf.Max(0, currentHealth - amount);
+
+    if (animator && !string.IsNullOrWhiteSpace(hurtTrigger))
+        animator.SetTrigger(hurtTrigger);
+
+    UpdateUI();
+
+    if (currentHealth <= 0)
+        Die();
+}
 
     public bool IsDead() => dead;
 

@@ -7,6 +7,11 @@ public class BigBossAI : MonoBehaviour
 {
     public enum BossStage { Stage1, Stage2, Stage3 }
 
+    public bool HasAliveTroops()
+{
+    return aliveTroops.Count > 0;
+}
+
     [Header("References")]
     public Transform player;
     public Rigidbody2D rb;
