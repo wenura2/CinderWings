@@ -1,26 +1,28 @@
 using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 
 public class ArcherEnemy : MonoBehaviour
 {
+    private enum ArcherState { PatrolUp, ReturnUp, Idle, PatrolDown, ReturnDown, Attack }
+    private ArcherState currentState = ArcherState.Idle;
+
     [Header("Arrow Settings")]
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackRadius = 5f;
-    [SerializeField] private float chaseRadius = 8f;
     [SerializeField] private int attackDamage = 20;
-    [SerializeField] private float moveSpeed = 3f;
 
-    private float cooldownTimer;
+    [Header("Patrol Settings")]
+    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float moveDuration = 2f;   // move time (2s)
+    [SerializeField] private float idleDuration = 2f;   // idle time (2s)
+    [SerializeField] private float patrolDistance = 3f; // distance up/down
+
     private Animator animator;
     private Vector3 originalScale;
     private Vector3 startPosition;
-
-    // Breadcrumb stack
-    private Stack<Vector3> breadcrumbs = new Stack<Vector3>();
-    private float breadcrumbInterval = 0.5f; // seconds between drops
-    private float breadcrumbTimer = 0f;
+    private float cooldownTimer;
 
     private void Awake()
     {
@@ -32,9 +34,7 @@ public class ArcherEnemy : MonoBehaviour
     {
         startPosition = transform.position;
         cooldownTimer = attackCooldown;
-
-        // ✅ Prevent accidental attack trigger at start
-        animator.ResetTrigger("Attack");
+        StartCoroutine(StateMachineRoutine());
     }
 
     private void Update()
@@ -45,75 +45,89 @@ public class ArcherEnemy : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector2.Distance(player.transform.position, transform.position);
-        bool isMoving = false; // track movement for Run animation
 
-        if (distance <= chaseRadius)
+        if (distance <= attackRadius)
         {
-            // Face player
+            // ✅ Switch to Attack state immediately
+            currentState = ArcherState.Attack;
+
+            // Face player horizontally (flip only on X)
             Vector2 direction = (player.transform.position - transform.position).normalized;
             transform.localScale = direction.x < 0
                 ? new Vector3(-originalScale.x, originalScale.y, originalScale.z)
                 : originalScale;
 
-            if (distance <= attackRadius)
+            // Fire continuously on cooldown
+            if (cooldownTimer <= 0f)
             {
-                // Attack
-                if (cooldownTimer <= 0f)
-                {
-                    animator.SetTrigger("Attack");
-                    cooldownTimer = attackCooldown;
-                }
-            }
-            else
-            {
-                // Chase player
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
-                    player.transform.position,
-                    moveSpeed * Time.deltaTime
-                );
-                isMoving = true;
-
-                // Drop breadcrumbs while chasing
-                breadcrumbTimer -= Time.deltaTime;
-                if (breadcrumbTimer <= 0f)
-                {
-                    breadcrumbs.Push(transform.position);
-                    breadcrumbTimer = breadcrumbInterval;
-                }
+                animator.SetTrigger("Attack"); // plays Archer_Shoot_Black
+                cooldownTimer = attackCooldown;
             }
         }
         else
         {
-            // Return to start using breadcrumbs
-            if (breadcrumbs.Count > 0)
-            {
-                Vector3 targetPos = breadcrumbs.Pop();
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
-                    targetPos,
-                    moveSpeed * Time.deltaTime
-                );
-                isMoving = true; // ✅ Run while retracing breadcrumbs
-            }
-            else
-            {
-                // If no breadcrumbs left, go straight to start position
-                transform.position = Vector2.MoveTowards(
-                    transform.position,
-                    startPosition,
-                    moveSpeed * Time.deltaTime
-                );
+            // ✅ Resume patrol cycle if player leaves
+            if (currentState == ArcherState.Attack)
+                currentState = ArcherState.Idle;
+        }
+    }
 
-                if (Vector2.Distance(transform.position, startPosition) > 0.05f)
-                    isMoving = true; // ✅ Run until fully back
-                else
-                    isMoving = false; // Idle once exactly at start
+    private IEnumerator StateMachineRoutine()
+    {
+        while (true)
+        {
+            switch (currentState)
+            {
+                case ArcherState.PatrolUp:
+                    animator.SetBool("isRunning", true);
+                    yield return MoveTo(startPosition + new Vector3(0f, patrolDistance, 0f), moveDuration);
+                    currentState = ArcherState.ReturnUp;
+                    break;
+
+                case ArcherState.ReturnUp:
+                    animator.SetBool("isRunning", true);
+                    yield return MoveTo(startPosition, moveDuration);
+                    currentState = ArcherState.Idle;
+                    break;
+
+                case ArcherState.Idle:
+                    animator.SetBool("isRunning", false);
+                    yield return new WaitForSeconds(idleDuration);
+                    currentState = ArcherState.PatrolDown;
+                    break;
+
+                case ArcherState.PatrolDown:
+                    animator.SetBool("isRunning", true);
+                    yield return MoveTo(startPosition - new Vector3(0f, patrolDistance, 0f), moveDuration);
+                    currentState = ArcherState.ReturnDown;
+                    break;
+
+                case ArcherState.ReturnDown:
+                    animator.SetBool("isRunning", true);
+                    yield return MoveTo(startPosition, moveDuration);
+                    currentState = ArcherState.Idle;
+                    break;
+
+                case ArcherState.Attack:
+                    animator.SetBool("isRunning", false);
+                    yield return null; // stay here until Update() changes state
+                    break;
             }
         }
+    }
 
-        // ✅ Update Animator for Run/Idle
-        animator.SetBool("isRunning", isMoving);
+    private IEnumerator MoveTo(Vector3 target, float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            if (currentState == ArcherState.Attack) yield break; // stop moving immediately
+
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+
+            yield return null;
+        }
     }
 
     // Called via Animation Event in Archer Attack animation
@@ -123,7 +137,7 @@ public class ArcherEnemy : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector2.Distance(player.transform.position, transform.position);
-        if (distance > attackRadius) return; // safeguard
+        if (distance > attackRadius) return;
 
         Vector2 direction = (player.transform.position - shootPoint.position).normalized;
         GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
@@ -140,7 +154,5 @@ public class ArcherEnemy : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRadius);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRadius);
     }
 }

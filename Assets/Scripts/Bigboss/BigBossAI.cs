@@ -196,10 +196,10 @@ if (!UpdateAggro())
     void ChasePlayer()
     {
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
-        rb.velocity = dir * moveSpeed;
+        rb.linearVelocity = dir * moveSpeed;
 
         if (animator && !string.IsNullOrWhiteSpace(walkBool))
-            animator.SetBool(walkBool, rb.velocity.sqrMagnitude > 0.01f);
+            animator.SetBool(walkBool, rb.linearVelocity.sqrMagnitude > 0.01f);
     }
 
     void KeepAwayFromPlayer()
@@ -209,7 +209,7 @@ if (!UpdateAggro())
 
         if (dist < keepAwayDistance)
         {
-            rb.velocity = away * moveSpeed;
+            rb.linearVelocity = away * moveSpeed;
 
             if (animator && !string.IsNullOrWhiteSpace(walkBool))
                 animator.SetBool(walkBool, true);
@@ -222,7 +222,7 @@ if (!UpdateAggro())
 
     void StopMove()
     {
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         if (animator && !string.IsNullOrWhiteSpace(walkBool))
             animator.SetBool(walkBool, false);
     }
@@ -304,7 +304,7 @@ if (!UpdateAggro())
         while (t < jumpAwayDuration)
         {
             t += Time.deltaTime;
-            rb.velocity = away * jumpAwayForce;
+            rb.linearVelocity = away * jumpAwayForce;
             yield return null;
         }
 

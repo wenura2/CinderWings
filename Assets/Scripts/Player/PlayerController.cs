@@ -197,14 +197,16 @@ public class PlayerController : MonoBehaviour
         }
 
         EnemyHealth enemyHealth = hit.GetComponent<EnemyHealth>();
-        if (enemyHealth != null)
-        {
-            bool wasDead = TryGetDeadState(enemyHealth, out bool d0) && d0;
-            enemyHealth.TakeDamage(damage);
-            bool isDeadNow = TryGetDeadState(enemyHealth, out bool d1) && d1;
-            if (!wasDead && isDeadNow) RefillFireBreathOnKill();
-            return;
-        }
+if (enemyHealth != null)
+{
+    bool wasDead = TryGetDeadState(enemyHealth, out bool d0) && d0;
+    // ✅ Pass transform.position so knockback + dust work
+    enemyHealth.TakeDamage(damage, transform.position);
+    bool isDeadNow = TryGetDeadState(enemyHealth, out bool d1) && d1;
+    if (!wasDead && isDeadNow) RefillFireBreathOnKill();
+    return;
+}
+
 
         BigKnightHealth bkHealth = hit.GetComponent<BigKnightHealth>();
         if (bkHealth != null)
@@ -222,6 +224,16 @@ public class PlayerController : MonoBehaviour
             bool wasDead = TryGetDeadState(bossHealth, out bool d0) && d0;
             bossHealth.TakeDamage(damage);
             bool isDeadNow = TryGetDeadState(bossHealth, out bool d1) && d1;
+            if (!wasDead && isDeadNow) RefillFireBreathOnKill();
+            return;
+        }
+
+        ArcherHealth archerHealth = hit.GetComponent<ArcherHealth>();
+        if (archerHealth != null)
+        {
+            bool wasDead = TryGetDeadState(archerHealth, out bool d0) && d0;
+            archerHealth.TakeDamage(damage, transform.position);
+            bool isDeadNow = TryGetDeadState(archerHealth, out bool d1) && d1;
             if (!wasDead && isDeadNow) RefillFireBreathOnKill();
             return;
         }

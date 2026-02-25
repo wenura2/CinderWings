@@ -1,27 +1,26 @@
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class WarriorAI : MonoBehaviour
 {
     [Header("Detection")]
     public float detectionRange = 6f;
-    public float attackRange = 1.5f;
+    public float attackRange = 2f;
 
     [Header("Movement")]
-    public float moveSpeed = 2.5f;
+    public float moveSpeed = 3f;
 
     [Header("Attack")]
     public float attackCooldown = 1.2f;
-    public int attackDamage = 12;
+    public int attackDamage = 15;
 
     private Transform player;
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private EnemyHealth enemyHealth;
 
     private Vector2 movement;
     private float attackTimer = 0f;
-    private bool isAttacking = false;
+    private bool isAttacking = false; // internal flag only
 
     void Start()
     {
@@ -29,12 +28,11 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        enemyHealth = GetComponent<EnemyHealth>();
     }
 
     void Update()
     {
-        if (player == null || enemyHealth == null || enemyHealth.IsDead()) return;
+        if (player == null) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
 
@@ -56,7 +54,7 @@ public class EnemyAI : MonoBehaviour
                 movement = direction;
                 animator.SetFloat("Speed", movement.magnitude);
 
-                // Flip sprite for facing direction
+                // Flip sprite depending on facing direction
                 spriteRenderer.flipX = direction.x < 0;
             }
         }
@@ -69,12 +67,10 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        // ✅ Only move if not attacking and not knocked back
-        if (!isAttacking && !enemyHealth.IsKnockedBack())
+        if (!isAttacking)
         {
             rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
-        // ❌ Removed the else block that was cancelling knockback velocity
     }
 
     void StartAttack()
@@ -82,27 +78,8 @@ public class EnemyAI : MonoBehaviour
         isAttacking = true;
         attackTimer = attackCooldown;
 
-        // Reset triggers
-        animator.ResetTrigger("AttackRight");
-        animator.ResetTrigger("AttackUp");
-        animator.ResetTrigger("AttackDown");
-
-        Vector2 direction = (player.position - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Quadrant-based attack selection (Right, Up, Down only)
-        if (angle > -45 && angle <= 45)
-        {
-            animator.SetTrigger("AttackRight");
-        }
-        else if (angle > 45 && angle <= 135)
-        {
-            animator.SetTrigger("AttackUp");
-        }
-        else
-        {
-            animator.SetTrigger("AttackDown");
-        }
+        // Only trigger the attack animation
+        animator.SetTrigger("Attack");
 
         Invoke("DealDamage", 0.3f); // sync damage with animation
     }
@@ -118,11 +95,12 @@ public class EnemyAI : MonoBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(attackDamage);
-                Debug.Log("Enemy dealt " + attackDamage + " damage!");
+                Debug.Log("Warrior dealt " + attackDamage + " damage!");
             }
         }
     }
 
+    // Called at the end of attack animation via Animation Event
     public void OnAttackAnimationEnd()
     {
         isAttacking = false;
