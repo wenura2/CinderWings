@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8243685687377031802}
   - component: {fileID: 6149622151055162644}
-  - component: {fileID: 7028210972359725389}
+  - component: {fileID: 5807089636860282766}
   m_Layer: 0
   m_Name: House3
   m_TagString: Untagged
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1296568719
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: c94d66993de80409fb65b3577475c483, type: 3}
@@ -92,8 +92,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &7028210972359725389
-BoxCollider2D:
+--- !u!60 &5807089636860282766
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -126,7 +126,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.007171154, y: -0.13243139}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -136,5 +136,35 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.4693327, y: 1.7068474}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.796875, y: -1.125}
+      - {x: 0.875, y: -0.59375}
+      - {x: 0.984375, y: -0.53125}
+      - {x: 0.984375, y: -0.328125}
+      - {x: 0.828125, y: 0.265625}
+      - {x: 0.890625, y: 0.359375}
+      - {x: 0.890625, y: 0.5}
+      - {x: 0.8125, y: 0.859375}
+      - {x: 0.765625, y: 0.953125}
+      - {x: 0.265625, y: 0.953125}
+      - {x: -0.296875, y: 0.9375}
+      - {x: -0.40625, y: 0.953125}
+      - {x: -0.75, y: 0.953125}
+      - {x: -0.796875, y: 0.9375}
+      - {x: -0.84375, y: 0.765625}
+      - {x: -0.859375, y: 0.578125}
+      - {x: -0.9375, y: 0.328125}
+      - {x: -0.828125, y: 0.265625}
+      - {x: -0.875, y: -0.09375}
+      - {x: -0.984375, y: -0.328125}
+      - {x: -0.984375, y: -0.5}
+      - {x: -0.96875, y: -0.53125}
+      - {x: -0.84375, y: -0.546875}
+      - {x: -0.828125, y: -1.09375}
+      - {x: -0.734375, y: -1.125}
+      - {x: -0.40625, y: -1.125}
+      - {x: 0.46875, y: -1.0625}
+      - {x: 0.4375, y: -1.109375}
+      - {x: 0.5, y: -1.125}
+  m_UseDelaunayMesh: 1

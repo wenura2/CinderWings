@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5456144617751069318}
   - component: {fileID: 2159417586393373950}
-  - component: {fileID: 428659249889584923}
+  - component: {fileID: 5252768320403288124}
   m_Layer: 0
   m_Name: Castle
   m_TagString: Untagged
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1296568719
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: d0349d8d3a04044f7a4810157b116b14, type: 3}
@@ -92,8 +92,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &428659249889584923
-BoxCollider2D:
+--- !u!68 &5252768320403288124
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -126,15 +126,21 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.063522995, y: -0.2157197}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5, y: 4}
-    newSize: {x: 5, y: 4}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 4.1106744, y: 2.4401798}
+  m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: 1.9390275, y: -1.2798238}
+  - {x: 1.6615584, y: -1.4751499}
+  - {x: -0.020221978, y: -1.8283691}
+  - {x: -1.6325089, y: -1.4702069}
+  - {x: -2.0370922, y: -1.2750406}
+  - {x: -2.2918057, y: 0.27666107}
+  - {x: -0.9391409, y: -0.17331482}
+  - {x: -0.240357, y: -0.24889569}
+  - {x: 0.6656849, y: -0.1892766}
+  - {x: 2.2518437, y: 0.17347002}
+  - {x: 1.957732, y: -1.3028835}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

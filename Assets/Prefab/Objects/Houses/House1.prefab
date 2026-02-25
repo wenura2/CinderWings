@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6141021866451824860}
   - component: {fileID: 7945864667718030915}
-  - component: {fileID: 7447234206002002602}
+  - component: {fileID: 8473170462211229678}
   m_Layer: 0
   m_Name: House1
   m_TagString: Untagged
@@ -92,8 +92,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &7447234206002002602
-BoxCollider2D:
+--- !u!60 &8473170462211229678
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -126,7 +126,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0217942, y: -0.12206742}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -136,5 +136,35 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2880576, y: 1.7042072}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.484375, y: -1.109375}
+      - {x: 0.640625, y: -1.09375}
+      - {x: 0.671875, y: -1.0625}
+      - {x: 0.734375, y: -0.625}
+      - {x: 0.90625, y: -0.46875}
+      - {x: 0.90625, y: -0.234375}
+      - {x: 0.859375, y: 0}
+      - {x: 0.78125, y: 0.1875}
+      - {x: 0.796875, y: 0.4375}
+      - {x: 0.796875, y: 0.640625}
+      - {x: 0.75, y: 0.734375}
+      - {x: 0.265625, y: 1.015625}
+      - {x: 0.125, y: 1.28125}
+      - {x: -0.125, y: 1.28125}
+      - {x: -0.171875, y: 1.125}
+      - {x: -0.5625, y: 0.828125}
+      - {x: -0.765625, y: 0.703125}
+      - {x: -0.828125, y: 0.578125}
+      - {x: -0.796875, y: 0.34375}
+      - {x: -0.84375, y: -0.203125}
+      - {x: -0.90625, y: -0.25}
+      - {x: -0.90625, y: -0.453125}
+      - {x: -0.734375, y: -0.640625}
+      - {x: -0.671875, y: -1.078125}
+      - {x: -0.640625, y: -1.09375}
+      - {x: -0.40625, y: -1.109375}
+      - {x: -0.1875, y: -1.109375}
+      - {x: -0.140625, y: -1.046875}
+      - {x: 0.203125, y: -1.109375}
+  m_UseDelaunayMesh: 1
