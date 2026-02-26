@@ -105,6 +105,12 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log("Enemy defeated!");
 
+        // ✅ Notify the manager that an enemy was killed
+        if (CrystalObjectiveManager.Instance != null)
+        {
+            CrystalObjectiveManager.Instance.RegisterEnemyKilled();
+        }
+
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 

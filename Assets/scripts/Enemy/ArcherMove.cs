@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ArcherEnemy : MonoBehaviour
+public class ArcherMove : MonoBehaviour
 {
     [Header("Arrow Settings")]
     [SerializeField] private GameObject arrowPrefab;
@@ -14,26 +14,24 @@ public class ArcherEnemy : MonoBehaviour
 
     private float cooldownTimer;
     private Animator animator;
-    private Vector3 originalScale;
+    private SpriteRenderer sr;
     private Vector3 startPosition;
 
     // Breadcrumb stack
     private Stack<Vector3> breadcrumbs = new Stack<Vector3>();
-    private float breadcrumbInterval = 0.5f; // seconds between drops
+    private float breadcrumbInterval = 0.5f;
     private float breadcrumbTimer = 0f;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        originalScale = transform.localScale;
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
         startPosition = transform.position;
         cooldownTimer = attackCooldown;
-
-        // ✅ Prevent accidental attack trigger at start
         animator.ResetTrigger("Attack");
     }
 
@@ -45,19 +43,19 @@ public class ArcherEnemy : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector2.Distance(player.transform.position, transform.position);
-        bool isMoving = false; // track movement for Run animation
+        bool isMoving = false;
 
         if (distance <= chaseRadius)
         {
-            // Face player
+            // Face player (flip sprite only)
             Vector2 direction = (player.transform.position - transform.position).normalized;
-            transform.localScale = direction.x < 0
-                ? new Vector3(-originalScale.x, originalScale.y, originalScale.z)
-                : originalScale;
+            if (Mathf.Abs(direction.x) > 0.2f) // slightly bigger threshold to avoid flicker
+            {
+                sr.flipX = direction.x < 0;
+            }
 
             if (distance <= attackRadius)
             {
-                // Attack
                 if (cooldownTimer <= 0f)
                 {
                     animator.SetTrigger("Attack");
@@ -94,7 +92,7 @@ public class ArcherEnemy : MonoBehaviour
                     targetPos,
                     moveSpeed * Time.deltaTime
                 );
-                isMoving = true; // ✅ Run while retracing breadcrumbs
+                isMoving = true;
             }
             else
             {
@@ -106,14 +104,14 @@ public class ArcherEnemy : MonoBehaviour
                 );
 
                 if (Vector2.Distance(transform.position, startPosition) > 0.05f)
-                    isMoving = true; // ✅ Run until fully back
+                    isMoving = true;
                 else
-                    isMoving = false; // Idle once exactly at start
+                    isMoving = false;
             }
         }
 
-        // ✅ Update Animator for Run/Idle
-        animator.SetBool("isRunning", isMoving);
+        // ✅ Animator parameter matches your controller
+        animator.SetBool("isMoving", isMoving);
     }
 
     // Called via Animation Event in Archer Attack animation
@@ -123,10 +121,15 @@ public class ArcherEnemy : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector2.Distance(player.transform.position, transform.position);
-        if (distance > attackRadius) return; // safeguard
+        if (distance > attackRadius) return;
 
         Vector2 direction = (player.transform.position - shootPoint.position).normalized;
-        GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
+
+        // Rotate arrow to face direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, rotation);
 
         ArrowProjectile projectile = arrow.GetComponent<ArrowProjectile>();
         if (projectile != null)

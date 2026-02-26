@@ -5,13 +5,20 @@ public class CrystalObjectiveManager : MonoBehaviour
 {
     public static CrystalObjectiveManager Instance { get; private set; }
 
-    [Header("Goal")]
+    [Header("Crystal Goal")]
+    [Tooltip("How many crystals must be broken to progress.")]
     public int crystalsRequired = 3;
 
-    [Header("Event (Door unlock)")]
-    public UnityEvent onAllCrystalsBroken;
+    [Header("Enemy Goal")]
+    [Tooltip("How many enemies must be killed to progress.")]
+    public int enemiesRequired = 38;
 
-    private int brokenCount = 0;
+    [Header("Event (Door unlock)")]
+    public UnityEvent onAllObjectivesComplete;
+
+    [Header("Runtime Progress (debug only)")]
+    [SerializeField] private int brokenCount = 0;
+    [SerializeField] private int enemiesKilled = 0;
 
     private void Awake()
     {
@@ -21,13 +28,29 @@ public class CrystalObjectiveManager : MonoBehaviour
             return;
         }
         Instance = this;
+        Debug.Log("CrystalObjectiveManager Awake → Instance set");
     }
 
     public void RegisterCrystalBroken()
     {
         brokenCount++;
+        Debug.Log($"Crystal broken! Count = {brokenCount}/{crystalsRequired}");
+        CheckObjectives();
+    }
 
-        if (brokenCount >= crystalsRequired)
-            onAllCrystalsBroken?.Invoke();
+    public void RegisterEnemyKilled()
+    {
+        enemiesKilled++;
+        Debug.Log($"Enemy killed! Count = {enemiesKilled}/{enemiesRequired}");
+        CheckObjectives();
+    }
+
+    private void CheckObjectives()
+    {
+        if (brokenCount >= crystalsRequired && enemiesKilled >= enemiesRequired)
+        {
+            Debug.Log("All objectives complete → unlocking door");
+            onAllObjectivesComplete?.Invoke();
+        }
     }
 }

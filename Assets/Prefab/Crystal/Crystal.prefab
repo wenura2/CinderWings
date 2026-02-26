@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8577326329085574850}
   - component: {fileID: 5895632817713599565}
   - component: {fileID: 39147774464957516}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1061136341
-  m_SortingLayer: 8
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2984624658488520603, guid: a57d03555cd185a4794e1e975518833b, type: 3}
@@ -594,7 +594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableCrystal
   maxHealth: 150
-  healthBarPrefab: {fileID: 4168325073194213023, guid: 60e737cc4c7af274cb4f270990183b1b, type: 3}
+  healthBarPrefab: {fileID: 909396143368106986, guid: 373953f96d6fee34c979047a61c4bd90, type: 3}
   pulseSpeed: 5.11
   pulseStrength: 0.4
   lowHealthPercent: 0.4

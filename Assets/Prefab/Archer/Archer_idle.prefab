@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 7289965976831424541}
   - component: {fileID: 3569156072870798228}
   m_Layer: 7
-  m_Name: Archer NotMoving
+  m_Name: Archer_idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,9 +166,7 @@ MonoBehaviour:
   shootPoint: {fileID: 3019340807871292444}
   attackCooldown: 2
   attackRadius: 5
-  chaseRadius: 8
   attackDamage: 20
-  moveSpeed: 0
 --- !u!58 &1299081651050971019
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -203,8 +201,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1.5000002
+  m_Offset: {x: -0.04261693, y: 0}
+  m_Radius: 0.58716244
 --- !u!114 &7289965976831424541
 MonoBehaviour:
   m_ObjectHideFlags: 0

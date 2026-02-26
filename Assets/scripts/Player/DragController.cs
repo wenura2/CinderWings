@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class DragController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -10,13 +10,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject firePrefab;
     [SerializeField] private Transform firePoint;
 
+    [Header("Attack Range")]
+    [SerializeField] private float attackRadius = 5f;   // how close enemies must be
+    [SerializeField] private LayerMask enemyMask;       // which layers count as enemies
+
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator myAnimator;
     private SpriteRenderer mySpriteRenderer;
-
-    private Vector3 lastMousePosition;
 
     private bool canAttack = true; // Controls one attack per click
 
@@ -26,20 +28,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (Mouse.current != null)
-            lastMousePosition = Mouse.current.position.ReadValue();
     }
 
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
-    }
+    private void OnEnable() => playerControls.Enable();
+    private void OnDisable() => playerControls.Disable();
 
     private void Update()
     {
@@ -72,7 +64,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Mouse.current == null) return;
 
-        // Right click triggers attack
         if (Mouse.current.leftButton.wasPressedThisFrame && canAttack)
         {
             Attack();
@@ -87,9 +78,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        canAttack = false; // Prevent repeat until animation finishes
+        // Check for enemies in range
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyMask);
+        if (enemiesInRange.Length == 0)
+        {
+            Debug.Log("No enemies in attack radius!");
+            return; // cancel attack
+        }
 
-        // Trigger attack animation
+        canAttack = false; // Prevent repeat until animation finishes
         myAnimator.SetTrigger("Attack");
     }
 
@@ -101,47 +98,39 @@ public class PlayerController : MonoBehaviour
         if (firePrefab == null || firePoint == null)
             return;
 
-        // Get mouse world position
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mouseWorldPosition.z = 0f;
 
-        // Calculate direction
         Vector2 direction = (mouseWorldPosition - firePoint.position).normalized;
 
-        // Spawn fire projectile
         GameObject fire = Instantiate(firePrefab, firePoint.position, Quaternion.identity);
 
-        // Send direction to projectile
         FireProjectile projectile = fire.GetComponent<FireProjectile>();
         if (projectile != null)
         {
             projectile.SetDirection(direction);
         }
 
-        // Allow next attack after fire is spawned
         canAttack = true;
     }
 
-    
+    // =========================
     // Face Mouse
-    
-
+    // =========================
     private void FaceMouseOnlyIfMoved()
-{
-    if (Mouse.current == null) return;
+    {
+        if (Mouse.current == null) return;
 
-    Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-    mouseWorldPosition.z = 0f;
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mouseWorldPosition.z = 0f;
 
-    Vector3 scale = transform.localScale;
+        Vector3 scale = transform.localScale;
 
-    if (mouseWorldPosition.x < transform.position.x)
-        scale.x = Mathf.Abs(scale.x);   // face right
-    else
-        scale.x = -Mathf.Abs(scale.x);  // face left
+        if (mouseWorldPosition.x < transform.position.x)
+            scale.x = Mathf.Abs(scale.x);   // face right
+        else
+            scale.x = -Mathf.Abs(scale.x);  // face left
 
-    transform.localScale = scale;
-}
-
-    
+        transform.localScale = scale;
+    }
 }

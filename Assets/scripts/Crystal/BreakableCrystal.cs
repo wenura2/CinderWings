@@ -10,8 +10,8 @@ public class BreakableCrystal : MonoBehaviour
     private bool breaking = false;
 
     [Header("Health Bar")]
-    public HealthBar healthBarPrefab; // assign prefab in Inspector
-    private HealthBar healthBarInstance;
+    public CrystalHealthBar healthBarPrefab; // assign prefab in Inspector
+    private CrystalHealthBar healthBarInstance;
 
     [Header("Pulse (Always On)")]
     public float pulseSpeed = 6f;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerHealth : MonoBehaviour
+public class DragHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
@@ -11,14 +11,14 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float hurtDuration = 0.5f; // how long Hurt animation plays
 
     private Animator animator;
-    private PlayerController playerController; // your movement script
+    private DragController playerController; // your movement script
     private bool isDead = false;
 
     private void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
-        playerController = GetComponent<PlayerController>();
+        playerController = GetComponent<DragController>();
     }
 
     public void TakeDamage(int amount)

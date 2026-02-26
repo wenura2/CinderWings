@@ -30,7 +30,7 @@ public class ArrowProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerHealth player = collision.GetComponent<PlayerHealth>();
+        DragHealth player = collision.GetComponent<DragHealth>();
         if (player != null)
         {
             player.TakeDamage(damage);

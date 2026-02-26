@@ -283,7 +283,7 @@ public class Boss : MonoBehaviour
         if (attackHitbox == null || !attackHitbox.enabled) return;
         if (!other.CompareTag("Player")) return;
 
-        var ph = other.GetComponent<PlayerHealth>(); // change if your health script name differs
+        var ph = other.GetComponent<DragHealth>(); // change if your health script name differs
         if (ph != null)
             ph.TakeDamage(attackDamage);
     }
