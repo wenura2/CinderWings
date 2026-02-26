@@ -20,7 +20,7 @@ public class EggHealth : MonoBehaviour
     public float flashDuration = 0.15f;
 
     [Header("Camera Shake")]
-    public CameraShake cameraShake;
+    public EggCameraShake cameraShake;
     public float shakeDuration = 0.2f;
     public float shakeMagnitude = 0.1f;
 
@@ -31,7 +31,11 @@ public class EggHealth : MonoBehaviour
     public float hitFreezeDuration = 0.12f;
 
     [Header("Death")]
-    public float destroyDelay = 1f;
+    public float destroyDelay = 1f; // use this as "die animation length"
+
+    [Header("Game Over")]
+    public GameOverController gameOver;   // ✅ drag your GameOverController here
+    public bool pauseOnGameOver = true;
 
     private bool isDead = false;
 
@@ -58,7 +62,7 @@ public class EggHealth : MonoBehaviour
     public void TakeDamage(int amount, Vector2 hitDirection)
     {
         if (animator)
-    animator.SetBool("FullyHealed", false);
+            animator.SetBool("FullyHealed", false);
 
         if (isDead || isInvincible)
             return;
@@ -71,8 +75,8 @@ public class EggHealth : MonoBehaviour
         if (spriteRenderer)
             StartCoroutine(DamageFlash());
 
-        if (cameraShake)
-            StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
+        if (cameraShake != null)
+            cameraShake.Shake(shakeDuration, shakeMagnitude);
 
         if (rb && hitDirection != Vector2.zero)
         {
@@ -90,7 +94,7 @@ public class EggHealth : MonoBehaviour
     }
 
     // =========================
-    // HEAL (used by bushes)
+    // HEAL
     // =========================
     public void Heal(int amount)
     {
@@ -102,10 +106,7 @@ public class EggHealth : MonoBehaviour
         UpdateFractureVisual();
     }
 
-    public bool IsFullyHealed()
-    {
-        return currentHits <= 0;
-    }
+    public bool IsFullyHealed() => currentHits <= 0;
 
     // =========================
     // VISUAL UPDATE
@@ -149,12 +150,11 @@ public class EggHealth : MonoBehaviour
     }
 
     // =========================
-    // DEATH
+    // DEATH + GAME OVER
     // =========================
     private void Die()
     {
         if (isDead) return;
-
         isDead = true;
 
         if (animator)
@@ -164,15 +164,29 @@ public class EggHealth : MonoBehaviour
             rb.velocity = Vector2.zero;
 
         if (eggMovement)
-            eggMovement.Die(); // 🔥 stops all movement
+            eggMovement.Die(); // stops movement
 
-        StartCoroutine(DestroyAfterDelay());
+        // show game over after animation time
+        StartCoroutine(GameOverAfterDelay());
     }
 
-    private IEnumerator DestroyAfterDelay()
+    private IEnumerator GameOverAfterDelay()
     {
-        yield return new WaitForSeconds(destroyDelay);
-        Destroy(gameObject);
+        // wait for your death animation to finish
+        yield return new WaitForSecondsRealtime(destroyDelay);
+
+        if (gameOver != null)
+        {
+            gameOver.pauseTime = pauseOnGameOver;
+            gameOver.ShowGameOver();
+        }
+        else
+        {
+            Debug.LogError("EggHealth: GameOverController not assigned!");
+        }
+
+        // ✅ DO NOT destroy the player here (UI needs scene alive)
+        // Destroy(gameObject);
     }
 
 #if UNITY_EDITOR

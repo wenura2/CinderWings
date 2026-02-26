@@ -4,6 +4,9 @@ using UnityEngine.Tilemaps;
 
 public class HeartManager : MonoBehaviour
 {
+
+    [Header("Win Sequence")]
+    public EggWinSequenceSimple winSequence;
     [Header("Tilemaps (Spawn across all 3)")]
     public Tilemap level1Ground;
     public Tilemap level2Ground;
@@ -107,12 +110,15 @@ public class HeartManager : MonoBehaviour
         RegisterCollected(); // call the original increment/UI/win logic
     }
 
-    private void Win()
-    {
-        Debug.Log("✅ WIN! Collected all hearts!");
-        // TODO: show win UI / load next mission / open gate, etc.
-    }
+ private void Win()
+{
+    Debug.Log("✅ WIN! Collected all hearts!");
 
+    if (winSequence != null)
+        winSequence.Play();   // ✅ correct for EggWinSequenceSimple
+    else
+        Debug.LogError("HeartManager: winSequence not assigned!");
+}
     private List<MapPair> BuildMapList()
     {
         var maps = new List<MapPair>(3);
