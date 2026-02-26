@@ -83,8 +83,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1061136341
-  m_SortingLayer: 8
+  m_SortingLayerID: 1553387387
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 815424164945274260, guid: 892e48c5a616f864db20db57306d3a1f, type: 3}
@@ -139,6 +139,10 @@ MonoBehaviour:
   moveSpeed: 10
   firePrefab: {fileID: 5652811351252480928, guid: 1079209ed194a254ebc92dce21b485cb, type: 3}
   firePoint: {fileID: 2721440285261263582}
+  attackRadius: 5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &3479990247395339471
 Animator:
   serializedVersion: 7
