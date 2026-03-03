@@ -3,17 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - Enemy
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - Obstical
   - Water
   - UI
   - Enemy
-  - 
+  - Player
   - 
   - 
   - 
@@ -43,34 +42,34 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Water
-    uniqueID: 215069157
+    uniqueID: 2920805207
     locked: 0
   - name: WaterAnimation
-    uniqueID: 3405128601
+    uniqueID: 2378802045
     locked: 0
   - name: Walls
-    uniqueID: 2356209409
+    uniqueID: 1850974225
     locked: 0
-  - name: Level1Ground
-    uniqueID: 3695477371
+  - name: Level1ground
+    uniqueID: 114482359
     locked: 0
-  - name: Level2Ground
-    uniqueID: 3452090515
+  - name: Level2ground
+    uniqueID: 1363431647
     locked: 0
-  - name: Level3Ground
-    uniqueID: 3538768995
+  - name: Level3ground
+    uniqueID: 3097880103
     locked: 0
   - name: Player
-    uniqueID: 115329247
+    uniqueID: 1553387387
     locked: 0
   - name: Enemy
-    uniqueID: 4260048233
+    uniqueID: 4216015795
     locked: 0
   - name: Trees
-    uniqueID: 833959747
+    uniqueID: 966785175
     locked: 0
   - name: VFX
-    uniqueID: 1454511633
+    uniqueID: 3993951661
     locked: 0
   m_RenderingLayers:
   - Default
