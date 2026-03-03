@@ -107,6 +107,12 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log("Enemy defeated!");
 
+        // ✅ Notify ObjectiveManager
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.RegisterEnemyKilled();
+        }
+
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 

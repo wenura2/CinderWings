@@ -29,7 +29,6 @@ public class BigKnightHealth : MonoBehaviour
 
         StartCoroutine(HurtFlash());
 
-        // Tell AI to play hurt animation
         if (knightAI != null)
             knightAI.OnHurt();
 
@@ -62,14 +61,18 @@ public class BigKnightHealth : MonoBehaviour
         if (col != null) col.enabled = false;
 
         StartCoroutine(DeathRoutine());
+
+        // ✅ Notify Phase2ObjectiveManager
+        if (Phase2ObjectiveManager.Instance != null)
+        {
+            Phase2ObjectiveManager.Instance.RegisterBigKnightKilled();
+        }
     }
 
     IEnumerator DeathRoutine()
     {
-        // Wait for death animation to play
         yield return new WaitForSeconds(1.5f);
 
-        // Fade out
         float t = 0;
         Color c = spriteRenderer.color;
         while (t < 1f)

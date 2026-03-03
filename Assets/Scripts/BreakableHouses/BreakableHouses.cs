@@ -120,6 +120,12 @@ public class BreakableHouse : MonoBehaviour
             yield return null;
         }
 
+        // ✅ Notify ObjectiveManager when destroyed
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.RegisterBuildingDestroyed();
+        }
+
         Destroy(gameObject);
     }
 }
