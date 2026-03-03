@@ -42,32 +42,35 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: BG Color
+  - name: Water
     uniqueID: 215069157
     locked: 0
-  - name: Water Form
+  - name: WaterAnimation
     uniqueID: 3405128601
     locked: 0
-  - name: Ground1
-    uniqueID: 3695477371
-    locked: 0
-  - name: Collision High
+  - name: Walls
     uniqueID: 2356209409
     locked: 0
-  - name: Ground2
+  - name: Level1Ground
+    uniqueID: 3695477371
+    locked: 0
+  - name: Level2Ground
     uniqueID: 3452090515
     locked: 0
-  - name: Hill Boundary
-    uniqueID: 107236301
-    locked: 0
-  - name: Ground3
+  - name: Level3Ground
     uniqueID: 3538768995
     locked: 0
   - name: Player
     uniqueID: 115329247
     locked: 0
-  - name: Objects
+  - name: Enemy
+    uniqueID: 4260048233
+    locked: 0
+  - name: Trees
     uniqueID: 833959747
+    locked: 0
+  - name: VFX
+    uniqueID: 1454511633
     locked: 0
   m_RenderingLayers:
   - Default
