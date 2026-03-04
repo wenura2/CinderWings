@@ -161,7 +161,7 @@ MonoBehaviour:
   currentHealth: 0
   hurtDuration: 0.3
   hurtColor: {r: 1, g: 0, b: 0, a: 1}
-  dustPrefab: {fileID: 0}
+  dustPrefab: {fileID: 2637010740898877400, guid: 9d1ca28fa829e2d47a639b9ff3b945d6, type: 3}
   knockbackForce: 5
   knockbackDuration: 0.2
   fadeDuration: 1

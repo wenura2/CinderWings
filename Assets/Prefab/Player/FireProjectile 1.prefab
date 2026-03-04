@@ -109,7 +109,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1553387387
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 9180251791023625898, guid: f22bcbea530fe5f4fa53dd1ed469097d, type: 3}
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aebf270c38c1fbe4fb55b89492cfbdf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
-  speed: 10
+  speed: 20
   damage: 20
   lifeTime: 3
   ignoreTag: Player
