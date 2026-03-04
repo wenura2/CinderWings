@@ -42,32 +42,32 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: WaterAnimation
-    uniqueID: 2378802045
-    locked: 0
   - name: Water
     uniqueID: 2920805207
     locked: 0
-  - name: Walls
-    uniqueID: 1850974225
+  - name: WaterAnimation
+    uniqueID: 2378802045
     locked: 0
-  - name: Level1ground
+  - name: Walls
     uniqueID: 114482359
     locked: 0
-  - name: Level2ground
+  - name: Level1ground
     uniqueID: 1363431647
     locked: 0
-  - name: Level3ground
+  - name: Level2ground
     uniqueID: 3097880103
     locked: 0
-  - name: Trees
-    uniqueID: 966785175
+  - name: Level3ground
+    uniqueID: 1850974225
     locked: 0
   - name: Player
     uniqueID: 1553387387
     locked: 0
   - name: Enemy
     uniqueID: 4216015795
+    locked: 0
+  - name: Trees
+    uniqueID: 966785175
     locked: 0
   - name: VFX
     uniqueID: 3993951661
