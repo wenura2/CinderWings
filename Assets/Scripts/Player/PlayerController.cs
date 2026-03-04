@@ -228,14 +228,15 @@ if (enemyHealth != null)
             return;
         }
 
-        ArcherHealth archerHealth = hit.GetComponent<ArcherHealth>();
+        ArcherHealthM2 archerHealth = hit.GetComponent<ArcherHealthM2>();
         if (archerHealth != null)
         {
             bool wasDead = TryGetDeadState(archerHealth, out bool d0) && d0;
             archerHealth.TakeDamage(damage, transform.position);
             bool isDeadNow = TryGetDeadState(archerHealth, out bool d1) && d1;
-            if (!wasDead && isDeadNow) RefillFireBreathOnKill();
-            return;
+        if (!wasDead && isDeadNow)
+        RefillFireBreathOnKill();
+         return;
         }
     }
 

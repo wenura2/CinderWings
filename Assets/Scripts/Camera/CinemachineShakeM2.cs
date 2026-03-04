@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Cinemachine;
 
 [RequireComponent(typeof(CinemachineCamera))]
-public class CinemachineShake : MonoBehaviour
+public class CinemachineShakeM2 : MonoBehaviour
 {
     private CinemachineCamera cmCamera;
     private CinemachineBasicMultiChannelPerlin noise;

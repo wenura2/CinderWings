@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ArcherHealth : MonoBehaviour
+public class ArcherHealthM2 : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;

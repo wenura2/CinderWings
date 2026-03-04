@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HeartPickup : MonoBehaviour
+public class HeartPickupM3 : MonoBehaviour
 {
     [Header("Heal Amount")]
     public int healAmount = 25;

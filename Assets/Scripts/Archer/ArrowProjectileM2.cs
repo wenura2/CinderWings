@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ArrowProjectile : MonoBehaviour
+public class ArrowProjectileM2 : MonoBehaviour
 {
     public float speed = 10f;
     private Vector2 direction;

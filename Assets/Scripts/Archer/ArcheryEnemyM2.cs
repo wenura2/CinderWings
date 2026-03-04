@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ArcherEnemy : MonoBehaviour
+public class ArcherEnemyM2 : MonoBehaviour
 {
     private enum ArcherState { PatrolUp, ReturnUp, Idle, PatrolDown, ReturnDown, Attack }
     private ArcherState currentState = ArcherState.Idle;
