@@ -60,14 +60,14 @@ TagManager:
   - name: Level3ground
     uniqueID: 1850974225
     locked: 0
+  - name: Trees
+    uniqueID: 966785175
+    locked: 0
   - name: Player
     uniqueID: 1553387387
     locked: 0
   - name: Enemy
     uniqueID: 4216015795
-    locked: 0
-  - name: Trees
-    uniqueID: 966785175
     locked: 0
   - name: VFX
     uniqueID: 3993951661

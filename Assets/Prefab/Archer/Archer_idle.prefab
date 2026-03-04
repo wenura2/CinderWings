@@ -41,10 +41,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3898441219762455140}
   - component: {fileID: 4664545042135264204}
+  - component: {fileID: 7025614545532065096}
+  - component: {fileID: 2350525859139228027}
   - component: {fileID: 7343514038977000551}
-  - component: {fileID: 9091730422671872740}
   - component: {fileID: 1299081651050971019}
-  - component: {fileID: 7289965976831424541}
   - component: {fileID: 3569156072870798228}
   m_Layer: 7
   m_Name: Archer_idle
@@ -115,7 +115,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -78951501
-  m_SortingLayer: 8
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7257567913506708742, guid: 2a0fcb2f11a4d496d9d10417bc8e1ab1, type: 3}
@@ -128,6 +128,43 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7025614545532065096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826880007398277123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a0e196015c104d1eb96e47cd4dc6eb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArcherEnemy
+  arrowPrefab: {fileID: 2787168033881810322, guid: d5f48270997577b4682d98d23a415cff, type: 3}
+  shootPoint: {fileID: 3019340807871292444}
+  attackCooldown: 2
+  attackRadius: 5
+  attackDamage: 20
+--- !u!114 &2350525859139228027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826880007398277123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f4c810d61a84091b88ff53f472d602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 100
+  currentHealth: 0
+  hurtDuration: 0.3
+  hurtColor: {r: 1, g: 0, b: 0, a: 1}
+  dustPrefab: {fileID: 0}
+  knockbackForce: 5
+  knockbackDuration: 0.2
+  fadeDuration: 1
 --- !u!95 &7343514038977000551
 Animator:
   serializedVersion: 7
@@ -150,23 +187,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9091730422671872740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6826880007398277123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f37e64aba754904db2bc57963fe96f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ArcherEnemy
-  arrowPrefab: {fileID: 2787168033881810322, guid: d5f48270997577b4682d98d23a415cff, type: 3}
-  shootPoint: {fileID: 3019340807871292444}
-  attackCooldown: 2
-  attackRadius: 5
-  attackDamage: 20
 --- !u!58 &1299081651050971019
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -203,26 +223,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.04261693, y: 0}
   m_Radius: 0.58716244
---- !u!114 &7289965976831424541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6826880007398277123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97a7be59dfd14fd42b92500aac70e3f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  maxHealth: 100
-  currentHealth: 0
-  hurtDuration: 0.3
-  hurtColor: {r: 1, g: 0.50334567, b: 0, a: 1}
-  dustPrefab: {fileID: 2637010740898877400, guid: 9d1ca28fa829e2d47a639b9ff3b945d6, type: 3}
-  knockbackForce: 0
-  knockbackDuration: 0
-  fadeDuration: 1
 --- !u!50 &3569156072870798228
 Rigidbody2D:
   serializedVersion: 5
