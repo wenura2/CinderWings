@@ -142,7 +142,7 @@ public class ArcherEnemyM2 : MonoBehaviour
         Vector2 direction = (player.transform.position - shootPoint.position).normalized;
         GameObject arrow = Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
 
-        ArrowProjectile projectile = arrow.GetComponent<ArrowProjectile>();
+        ArrowProjectileM2 projectile = arrow.GetComponent<ArrowProjectileM2>();
         if (projectile != null)
         {
             projectile.SetDirection(direction);

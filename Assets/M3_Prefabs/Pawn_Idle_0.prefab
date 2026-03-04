@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4775418103183647817}
   - component: {fileID: 6773835878152685726}
   - component: {fileID: 7761838971245166392}
-  - component: {fileID: 5328836651514279851}
+  - component: {fileID: 2850305139665015637}
   m_Layer: 0
   m_Name: Pawn_Idle_0
   m_TagString: Untagged
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 833959747
-  m_SortingLayer: 11
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5948806968594788206, guid: f06e2727e33304d9d86114733c00ba84, type: 3}
@@ -181,7 +181,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5328836651514279851
+--- !u!114 &2850305139665015637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8110062756473517453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dda0d4b762934cebaee6428edf870fa, type: 3}
+  m_Script: {fileID: 11500000, guid: eaa5f30303d7145ffbe2222610da6505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnAI
   detectionRange: 5

@@ -17,7 +17,7 @@ public class EnemyAI : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private EnemyHealth enemyHealth;
+    private EnemyHealthM3 enemyHealth;
 
     private Vector2 movement;
     private float attackTimer = 0f;
@@ -29,17 +29,16 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        enemyHealth = GetComponent<EnemyHealth>();
+        enemyHealth = GetComponent<EnemyHealthM3>();
     }
 
     void Update()
     {
-        if (player == null || enemyHealth == null || enemyHealth.IsDead) return;
+        if (player == null || enemyHealth == null || enemyHealth.IsDead()) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
 
-        if (attackTimer > 0)
-            attackTimer -= Time.deltaTime;
+        if (attackTimer > 0) attackTimer -= Time.deltaTime;
 
         if (distance <= attackRange)
         {
@@ -57,6 +56,7 @@ public class EnemyAI : MonoBehaviour
                 movement = direction;
                 animator.SetFloat("Speed", movement.magnitude);
 
+                // Flip sprite for facing direction
                 spriteRenderer.flipX = direction.x < 0;
             }
         }
@@ -69,10 +69,12 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isAttacking && !enemyHealth.IsKnockedBack)
+        // ✅ Only move if not attacking and not knocked back
+        if (!isAttacking && !enemyHealth.IsKnockedBack())
         {
             rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
+        // ❌ Removed the else block that was cancelling knockback velocity
     }
 
     void StartAttack()
@@ -80,6 +82,7 @@ public class EnemyAI : MonoBehaviour
         isAttacking = true;
         attackTimer = attackCooldown;
 
+        // Reset triggers
         animator.ResetTrigger("AttackRight");
         animator.ResetTrigger("AttackUp");
         animator.ResetTrigger("AttackDown");
@@ -87,14 +90,21 @@ public class EnemyAI : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
+        // Quadrant-based attack selection (Right, Up, Down only)
         if (angle > -45 && angle <= 45)
+        {
             animator.SetTrigger("AttackRight");
+        }
         else if (angle > 45 && angle <= 135)
+        {
             animator.SetTrigger("AttackUp");
+        }
         else
+        {
             animator.SetTrigger("AttackDown");
+        }
 
-        Invoke(nameof(DealDamage), 0.3f);
+        Invoke("DealDamage", 0.3f); // sync damage with animation
     }
 
     void DealDamage()
@@ -102,11 +112,9 @@ public class EnemyAI : MonoBehaviour
         if (player == null) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
-
         if (distance <= attackRange + 0.5f)
         {
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(attackDamage);

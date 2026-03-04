@@ -10,14 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1484598429662102973}
   - component: {fileID: 2784818825078774994}
+  - component: {fileID: 5454610308058162023}
   - component: {fileID: 5056178726502282134}
   - component: {fileID: 6444583109538944834}
   - component: {fileID: 7387929304647479114}
   - component: {fileID: 3208102471490428566}
-  - component: {fileID: 2991833244362311353}
   m_Layer: 6
   m_Name: Warrior_Idle_0
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,8 +82,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 833959747
-  m_SortingLayer: 9
+  m_SortingLayerID: -78951501
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7384290322352760091, guid: 728135fe2ac4b434ab56e445d647d2a0, type: 3}
@@ -96,6 +96,25 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &5454610308058162023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6742222440720776823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656d67c0d4e47498faf11931733229d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthM3
+  maxHealth: 50
+  hurtDuration: 0.3
+  hurtColor: {r: 1, g: 0, b: 0, a: 1}
+  dustPrefab: {fileID: 0}
+  knockbackForce: 5
+  knockbackDuration: 0.5
+  fadeDuration: 1
 --- !u!95 &5056178726502282134
 Animator:
   serializedVersion: 7
@@ -164,16 +183,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6742222440720776823}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf5682ea05d8e41fc95d42c0b2fc7773, type: 3}
+  m_Script: {fileID: 11500000, guid: 055a848925cef7a42a7d0ad41e594a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 20
-  hurtDuration: 0.5
-  hurtColor: {r: 1, g: 0, b: 0, a: 1}
-  dustPrefab: {fileID: 3422871940825197241, guid: 906ae7910b4c4cf4c835965a1aa93b8a, type: 3}
-  knockbackForce: 2
-  knockbackDuration: 0.5
-  fadeDuration: 1
+  detectionRange: 6
+  attackRange: 2
+  moveSpeed: 3
+  attackCooldown: 1.2
+  attackDamage: 15
 --- !u!50 &3208102471490428566
 Rigidbody2D:
   serializedVersion: 5
@@ -201,20 +218,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2991833244362311353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6742222440720776823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055a848925cef7a42a7d0ad41e594a99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  detectionRange: 6
-  attackRange: 2
-  moveSpeed: 3
-  attackCooldown: 1.2
-  attackDamage: 2

@@ -108,7 +108,7 @@ public class ArcherHealthM2 : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        ArcherEnemy archer = GetComponent<ArcherEnemy>();
+        ArcherEnemyM2 archer = GetComponent<ArcherEnemyM2>();
         if (archer != null) archer.enabled = false;
 
         // Start fade‑out effect

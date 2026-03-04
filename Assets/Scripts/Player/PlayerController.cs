@@ -196,16 +196,17 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        EnemyHealth enemyHealth = hit.GetComponent<EnemyHealth>();
-if (enemyHealth != null)
-{
-    bool wasDead = TryGetDeadState(enemyHealth, out bool d0) && d0;
-    // ✅ Pass transform.position so knockback + dust work
-    enemyHealth.TakeDamage(damage, transform.position);
-    bool isDeadNow = TryGetDeadState(enemyHealth, out bool d1) && d1;
-    if (!wasDead && isDeadNow) RefillFireBreathOnKill();
-    return;
-}
+        EnemyHealthM3 enemyHealth = hit.GetComponent<EnemyHealthM3>();
+        if (enemyHealth != null)
+        {
+            bool wasDead = TryGetDeadState(enemyHealth, out bool d0) && d0;
+            // ✅ Pass transform.position so knockback + dust work
+            enemyHealth.TakeDamage(damage, transform.position);
+            bool isDeadNow = TryGetDeadState(enemyHealth, out bool d1) && d1;
+            if (!wasDead && isDeadNow) RefillFireBreathOnKill();
+            return;
+        }
+
 
 
         BigKnightHealth bkHealth = hit.GetComponent<BigKnightHealth>();

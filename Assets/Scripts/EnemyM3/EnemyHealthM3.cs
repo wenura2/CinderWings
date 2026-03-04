@@ -1,11 +1,11 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealthM3 : MonoBehaviour
 {
     [Header("Health Settings")]
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentHealth;
+    [SerializeField] private int maxHealth = 50;
+    private int currentHealth;
 
     [Header("Hurt Settings")]
     [SerializeField] private float hurtDuration = 0.3f;
@@ -15,28 +15,27 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject dustPrefab;
 
     [Header("Knockback Settings")]
-    [SerializeField] private float knockbackForce = 5f;
-    [SerializeField] private float knockbackDuration = 0.2f;
+    [SerializeField] private float knockbackForce = 5f;      // stronger push
+    [SerializeField] private float knockbackDuration = 0.5f;  // longer knockback
 
     [Header("Death Settings")]
-    [SerializeField] private float fadeDuration = 1f; // how long to fade out
+    [SerializeField] private float fadeDuration = 1f;
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private bool isDead = false;
+    private bool isKnockedBack = false;
     private Rigidbody2D rb;
 
     private Vector2 lastAttackerPos;
 
-    private void Start()
+    void Start()
     {
         currentHealth = maxHealth;
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         if (spriteRenderer != null)
-        {
             originalColor = spriteRenderer.color;
-        }
     }
 
     public void TakeDamage(int amount, Vector2 attackerPosition)
@@ -44,18 +43,19 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         lastAttackerPos = attackerPosition;
-
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         if (currentHealth > 0)
         {
+            // Flash + dust + knockback all together
             StartCoroutine(FlashHurt());
 
             if (rb != null)
             {
                 Vector2 knockDir = (transform.position - (Vector3)attackerPosition).normalized;
                 rb.AddForce(knockDir * knockbackForce, ForceMode2D.Impulse);
+                isKnockedBack = true;
                 StartCoroutine(StopKnockback());
             }
         }
@@ -69,8 +69,10 @@ public class EnemyHealth : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
+            // Immediately flash hurt color
             spriteRenderer.color = hurtColor;
 
+            // Immediately spawn dust
             if (dustPrefab != null)
             {
                 GameObject dust = Instantiate(dustPrefab, transform.position, Quaternion.identity);
@@ -81,9 +83,10 @@ public class EnemyHealth : MonoBehaviour
                     Vector2 randomSpread = new Vector2(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f));
                     dustRb.AddForce((knockDir + randomSpread) * (knockbackForce * 0.5f), ForceMode2D.Impulse);
                 }
-                Destroy(dust, hurtDuration);
+                Destroy(dust, 0.5f); // quick burst lifetime
             }
 
+            // Wait before resetting color
             yield return new WaitForSeconds(hurtDuration);
             spriteRenderer.color = originalColor;
         }
@@ -93,9 +96,8 @@ public class EnemyHealth : MonoBehaviour
     {
         yield return new WaitForSeconds(knockbackDuration);
         if (rb != null)
-        {
             rb.linearVelocity = Vector2.zero;
-        }
+        isKnockedBack = false;
     }
 
     private void Die()
@@ -105,19 +107,18 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log("Enemy defeated!");
 
-        // ✅ Notify the manager that an enemy was killed
-        if (CrystalObjectiveManager.Instance != null)
+        // ✅ Notify ObjectiveManager
+        if (ObjectiveManager.Instance != null)
         {
-            CrystalObjectiveManager.Instance.RegisterEnemyKilled();
+            ObjectiveManager.Instance.RegisterEnemyKilled();
         }
 
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        ArcherEnemy archer = GetComponent<ArcherEnemy>();
-        if (archer != null) archer.enabled = false;
+        EnemyAI ai = GetComponent<EnemyAI>();
+        if (ai != null) ai.enabled = false;
 
-        // Start fade‑out effect
         StartCoroutine(FadeAndDisappear());
     }
 
@@ -136,4 +137,7 @@ public class EnemyHealth : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    public bool IsDead() => isDead;
+    public bool IsKnockedBack() => isKnockedBack;
 }
