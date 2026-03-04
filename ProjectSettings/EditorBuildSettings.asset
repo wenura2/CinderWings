@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Mission 1.unity
     guid: f484d1374afc12e42bac94628422ec57
+  - enabled: 1
+    path: Assets/mission2.unity
+    guid: e1e76d9c9a1dc954eb060cfa6224d8e1
+  - enabled: 1
+    path: Assets/Mission3.unity
+    guid: 46b7548dee5f0426c8008202c8208ff6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

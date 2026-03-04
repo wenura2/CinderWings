@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EggWinSequenceSimple : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class EggWinSequenceSimple : MonoBehaviour
     [Header("Timing")]
     public float hatchToFlashDelay = 0.10f;
     public float spawnDelayAfterFlashes = 0.05f;
+
+    [Header("Next Mission (Load Scene)")]
+    public bool loadMission2AfterWin = true;
+    public string mission2SceneName = "Mission2";
+    public float loadDelayAfterVanish = 0.1f;
 
     private bool running;
 
@@ -78,7 +84,7 @@ public class EggWinSequenceSimple : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(hatchToFlashDelay);
 
-        // 2) 3 flashes + shake
+        // 2) flashes + shake
         for (int i = 0; i < flashes; i++)
         {
             if (cameraShake != null)
@@ -105,6 +111,9 @@ public class EggWinSequenceSimple : MonoBehaviour
         {
             sr.enabled = true;
             sr.flipX = flipToRight;
+            // reset alpha (in case prefab is saved faded)
+            Color c = sr.color;
+            sr.color = new Color(c.r, c.g, c.b, 1f);
         }
 
         // Ensure physics won't interfere
@@ -125,7 +134,7 @@ public class EggWinSequenceSimple : MonoBehaviour
         while (t < emergeDuration)
         {
             t += Time.unscaledDeltaTime;
-            float p = Mathf.SmoothStep(0f, 1f, t / emergeDuration);
+            float p = Mathf.SmoothStep(0f, 1f, t / Mathf.Max(0.0001f, emergeDuration));
             if (dragon != null) dragon.transform.position = Vector3.Lerp(start, outPos, p);
             yield return null;
         }
@@ -154,7 +163,7 @@ public class EggWinSequenceSimple : MonoBehaviour
             while (ft < vanishFadeDuration)
             {
                 ft += Time.unscaledDeltaTime;
-                float a = Mathf.Lerp(1f, 0f, ft / vanishFadeDuration);
+                float a = Mathf.Lerp(1f, 0f, ft / Mathf.Max(0.0001f, vanishFadeDuration));
                 sr.color = new Color(c.r, c.g, c.b, a);
                 yield return null;
             }
@@ -162,6 +171,14 @@ public class EggWinSequenceSimple : MonoBehaviour
 
         if (dragon != null)
             Destroy(dragon);
+
+        // 7) Load Mission 2
+        if (loadMission2AfterWin && !string.IsNullOrEmpty(mission2SceneName))
+        {
+            yield return new WaitForSecondsRealtime(loadDelayAfterVanish);
+            Time.timeScale = 1f; // safety
+            SceneManager.LoadScene(mission2SceneName);
+        }
 
         running = false;
     }

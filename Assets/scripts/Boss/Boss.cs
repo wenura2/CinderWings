@@ -10,6 +10,10 @@ public class Boss : MonoBehaviour
     public BossAnimator bossAnim;
     public SpriteRenderer spriteRenderer;
 
+    [Header("Win Sequence (Mission2 -> Mission3)")]
+    public Mission2WinSequenceBoss winSequence; // drag WinSequenceManager here (script I gave you)
+    public bool destroyBossIfNoAnimator = true;  // safety
+
     [Header("Health")]
     public int maxHealth = 200;
     public float hurtInvincibleTime = 0.25f;
@@ -334,14 +338,30 @@ public class Boss : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+        // stop everything boss-related
         if (attackHitbox) attackHitbox.enabled = false;
-
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
+
+        // stop THIS boss script coroutines (attack cooldown etc.)
         StopAllCoroutines();
 
+        // play death anim (visual) if you have it
         if (bossAnim) bossAnim.PlayDeathAndFade();
-        else Destroy(gameObject);
+
+        // 🔥 Trigger Mission2 -> Mission3 win sequence
+        if (winSequence != null)
+        {
+            winSequence.bossObject = gameObject;   // optional (lets it hide boss after flashes)
+            winSequence.bossAnimator = bossAnim != null ? bossAnim.animator : null; // only if your BossAnimator exposes animator
+            winSequence.Play();
+        }
+        else
+        {
+            // fallback: just destroy boss if no win manager (so you don't get stuck)
+            if (destroyBossIfNoAnimator && bossAnim == null)
+                Destroy(gameObject);
+        }
     }
 
     // ---------------------------
