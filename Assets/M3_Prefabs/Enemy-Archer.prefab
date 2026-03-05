@@ -84,7 +84,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 833959747
-  m_SortingLayer: 9
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7257567913506708742, guid: 2a0fcb2f11a4d496d9d10417bc8e1ab1, type: 3}
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a7be59dfd14fd42b92500aac70e3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcherHealth
-  maxHealth: 100
+  maxHealth: 20
   currentHealth: 0
   hurtDuration: 0.3
   hurtColor: {r: 1, g: 0, b: 0, a: 1}

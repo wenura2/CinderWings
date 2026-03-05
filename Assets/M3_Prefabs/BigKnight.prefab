@@ -83,7 +83,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 833959747
-  m_SortingLayer: 9
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 815424164945274260, guid: 8cae5b3a657304868a5a852ebaf4913d, type: 3}
@@ -216,4 +216,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b376498e0927d458ac21721cfaeac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BigKnightHealth
-  maxHealth: 200
+  maxHealth: 100

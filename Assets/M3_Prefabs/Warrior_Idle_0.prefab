@@ -83,7 +83,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -78951501
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7384290322352760091, guid: 728135fe2ac4b434ab56e445d647d2a0, type: 3}
@@ -108,10 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656d67c0d4e47498faf11931733229d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthM3
-  maxHealth: 50
+  maxHealth: 20
   hurtDuration: 0.3
   hurtColor: {r: 1, g: 0, b: 0, a: 1}
-  dustPrefab: {fileID: 0}
+  dustPrefab: {fileID: 3422871940825197241, guid: 906ae7910b4c4cf4c835965a1aa93b8a, type: 3}
   knockbackForce: 5
   knockbackDuration: 0.5
   fadeDuration: 1
