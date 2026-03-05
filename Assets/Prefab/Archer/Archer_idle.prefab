@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3019340807871292444}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 232020386149741989}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.435, y: -0.153, z: 0}
+  m_LocalPosition: {x: 0.435, y: 0.008, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,9 +46,9 @@ GameObject:
   - component: {fileID: 7343514038977000551}
   - component: {fileID: 1299081651050971019}
   - component: {fileID: 3569156072870798228}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Archer_idle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -157,11 +157,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f4c810d61a84091b88ff53f472d602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 100
+  maxHealth: 60
   currentHealth: 0
   hurtDuration: 0.3
   hurtColor: {r: 1, g: 0, b: 0, a: 1}
-  dustPrefab: {fileID: 2637010740898877400, guid: 9d1ca28fa829e2d47a639b9ff3b945d6, type: 3}
+  dustPrefab: {fileID: 3422871940825197241, guid: 906ae7910b4c4cf4c835965a1aa93b8a, type: 3}
   knockbackForce: 5
   knockbackDuration: 0.2
   fadeDuration: 1
