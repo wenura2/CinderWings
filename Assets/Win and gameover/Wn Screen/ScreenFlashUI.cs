@@ -38,6 +38,15 @@ public class ScreenFlashUI : MonoBehaviour
         SetAlpha(0f);
     }
 
+    // 🔹 Hold full white for a duration
+    public IEnumerator HoldWhite(float duration)
+    {
+        overlay.color = Color.white;
+        SetAlpha(1f); // full white
+        yield return new WaitForSecondsRealtime(duration);
+        SetAlpha(0f); // reset back to transparent
+    }
+
     private void SetAlpha(float a)
     {
         if (!overlay) return;
