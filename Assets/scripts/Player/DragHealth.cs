@@ -6,16 +6,16 @@ public class DragHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentHealth;
+    private int currentHealth;
 
     [Header("Hurt Settings")]
     [SerializeField] private float hurtDuration = 0.5f;
 
     [Header("UI Health Bar")]
-    public Slider healthBar;          // assign in Inspector
-    public Transform healthBarCanvas; // assign the Canvas Transform
-    public Vector3 barOffset = new Vector3(0, 2f, 0); // position above dragon
-    public Image fillImage;           // assign the Fill image of the Slider
+    public Slider healthBar;
+    public Transform healthBarCanvas;
+    public Vector3 barOffset = new Vector3(0, 2f, 0);
+    public Image fillImage;
 
     [Header("Health Bar Colors")]
     public Color fullHealthColor = Color.green;
@@ -26,7 +26,10 @@ public class DragHealth : MonoBehaviour
     private DragController playerController;
     private bool isDead = false;
 
-    private void Start()
+    [Header("Game Over")]
+    public DragonGameOver gameOverController;
+
+    void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
@@ -40,7 +43,7 @@ public class DragHealth : MonoBehaviour
         UpdateHealthBarColor();
     }
 
-    private void Update()
+    void Update()
     {
         // Make health bar follow dragon and face camera
         if (healthBarCanvas != null)
@@ -56,8 +59,6 @@ public class DragHealth : MonoBehaviour
 
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        Debug.Log("Player took damage! Current HP: " + currentHealth);
 
         if (healthBar != null)
         {
@@ -82,15 +83,10 @@ public class DragHealth : MonoBehaviour
         {
             float healthPercent = (float)currentHealth / maxHealth;
 
-            // Blend between colors based on health percentage
             if (healthPercent > 0.5f)
-            {
                 fillImage.color = Color.Lerp(midHealthColor, fullHealthColor, (healthPercent - 0.5f) * 2f);
-            }
             else
-            {
                 fillImage.color = Color.Lerp(lowHealthColor, midHealthColor, healthPercent * 2f);
-            }
         }
     }
 
@@ -104,7 +100,6 @@ public class DragHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        Debug.Log("Player defeated!");
         animator.SetTrigger("Death");
 
         if (playerController != null)
@@ -114,12 +109,17 @@ public class DragHealth : MonoBehaviour
         if (col != null)
             col.enabled = false;
 
+        // Trigger Game Over UI
+        if (gameOverController != null)
+            gameOverController.ShowGameOver();
+
+        // Dragon disappears after animation, using real time so it works when timeScale = 0
         StartCoroutine(DisappearAfterDelay(2f));
     }
 
     private IEnumerator DisappearAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         gameObject.SetActive(false);
     }
 
