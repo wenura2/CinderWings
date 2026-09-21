@@ -15,7 +15,7 @@ public class EnemyAnimationController : MonoBehaviour
 
     void Update()
     {
-        float speed = rb.velocity.magnitude;
+        float speed = rb.linearVelocity.magnitude;
         anim.SetFloat("Speed", speed);
     }
 

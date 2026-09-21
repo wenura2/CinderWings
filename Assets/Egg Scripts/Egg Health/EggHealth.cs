@@ -80,7 +80,7 @@ public class EggHealth : MonoBehaviour
 
         if (rb && hitDirection != Vector2.zero)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.AddForce(hitDirection.normalized * knockbackForce, ForceMode2D.Impulse);
         }
 
@@ -161,7 +161,7 @@ public class EggHealth : MonoBehaviour
             animator.SetTrigger("Death");
 
         if (rb)
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
 
         if (eggMovement)
             eggMovement.Die(); // stops movement

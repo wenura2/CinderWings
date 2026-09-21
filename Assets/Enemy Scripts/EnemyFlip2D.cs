@@ -16,7 +16,7 @@ public class EnemyFlip2D : MonoBehaviour
     {
         if (!sr || !rb) return;
 
-        float x = rb.velocity.x;
+        float x = rb.linearVelocity.x;
         if (Mathf.Abs(x) < deadZone) return;
 
         // If moving right -> face right (flip off), moving left -> face left (flip on)

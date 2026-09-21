@@ -99,7 +99,7 @@ public class EnemyAI2D : MonoBehaviour
 
             case State.Alert:
                 desiredVel = Vector2.zero;
-                rb.velocity = Vector2.zero; // make Speed = 0
+                rb.linearVelocity = Vector2.zero; // make Speed = 0
                 alertTimer -= Time.fixedDeltaTime;
                 if (alertTimer <= 0f) EnterChase();
                 break;
@@ -277,16 +277,16 @@ public class EnemyAI2D : MonoBehaviour
     {
         if (maxSpeed <= 0.001f)
         {
-            rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, steering * Time.fixedDeltaTime);
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, steering * Time.fixedDeltaTime);
             return;
         }
 
-        Vector2 newVel = Vector2.Lerp(rb.velocity, desiredVel, steering * Time.fixedDeltaTime);
+        Vector2 newVel = Vector2.Lerp(rb.linearVelocity, desiredVel, steering * Time.fixedDeltaTime);
 
         if (newVel.magnitude > maxSpeed)
             newVel = newVel.normalized * maxSpeed;
 
-        rb.velocity = newVel;
+        rb.linearVelocity = newVel;
     }
 
     // ---------------- detection ----------------

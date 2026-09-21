@@ -112,7 +112,7 @@ public class EggWinSequenceSimple : MonoBehaviour
         if (rb == null) rb = dragon.GetComponentInChildren<Rigidbody2D>(true);
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
             rb.simulated = false;
         }

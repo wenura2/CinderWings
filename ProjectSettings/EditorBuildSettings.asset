@@ -8,14 +8,20 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Main Menu.unity
     guid: 0168f5a63915d9d40840cb6083efb6d7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Loading Screen.unity
     guid: 6cbba4f691c7e7d4c96c9ced1aeaf68a
   - enabled: 1
+    path: Assets/MainMenu.unity
+    guid: 78ad06c19ba15450594e97689924548a
+  - enabled: 1
     path: Assets/Mission 1.unity
     guid: f484d1374afc12e42bac94628422ec57
+  - enabled: 1
+    path: Assets/mission2.unity
+    guid: e1e76d9c9a1dc954eb060cfa6224d8e1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

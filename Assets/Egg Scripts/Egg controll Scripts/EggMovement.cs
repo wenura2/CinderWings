@@ -21,7 +21,7 @@ public class EggMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
-        rb.drag = deceleration;
+        rb.linearDamping = deceleration;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
         animController = GetComponent<EggAnimationController>();
@@ -51,13 +51,13 @@ public class EggMovement : MonoBehaviour
             return;
 
         Vector2 targetVelocity = inputDirection * moveSpeed;
-        rb.velocity = Vector2.MoveTowards(rb.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
-        if (rb.velocity.magnitude > moveSpeed)
-            rb.velocity = rb.velocity.normalized * moveSpeed;
+        if (rb.linearVelocity.magnitude > moveSpeed)
+            rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
 
         if (animController != null)
-            animController.SetVelocity(rb.velocity);
+            animController.SetVelocity(rb.linearVelocity);
     }
 
     // ✅ Call this when the egg dies
@@ -70,7 +70,7 @@ public class EggMovement : MonoBehaviour
 
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
             rb.simulated = false; // ✅ hard stop: no physics movement possible
         }

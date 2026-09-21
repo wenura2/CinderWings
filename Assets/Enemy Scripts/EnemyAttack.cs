@@ -37,8 +37,8 @@ public class EnemyAttack : MonoBehaviour
         if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
 
         // Keep track of last facing direction from movement
-        if (rb && rb.velocity.sqrMagnitude > 0.01f)
-            lastFacing = rb.velocity.normalized;
+        if (rb && rb.linearVelocity.sqrMagnitude > 0.01f)
+            lastFacing = rb.linearVelocity.normalized;
     }
 
     /// <summary>
