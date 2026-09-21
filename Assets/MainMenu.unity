@@ -203,7 +203,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55.15
+  m_fontSize: 29.6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -292,8 +292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 166.82127, y: 116.000015}
-  m_SizeDelta: {x: 306.8371, y: 98.8625}
+  m_AnchoredPosition: {x: 225.42, y: 70}
+  m_SizeDelta: {x: 247.1691, y: 73.3057}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &530774361
 MonoBehaviour:
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.1
+  m_fontSize: 19.5
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -956,7 +956,7 @@ MonoBehaviour:
   gamePlayPanel: {fileID: 914905918}
   mission2MenuPanel: {fileID: 1198802648}
   mission1SceneName: Mission 1
-  mission2SceneName: Mission 2
+  mission2SceneName: mission2
   mission2Button: {fileID: 0}
 --- !u!4 &944123127
 Transform:
@@ -1568,8 +1568,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 169.8213, y: 6.0000153}
-  m_SizeDelta: {x: 306.8371, y: 98.8625}
+  m_AnchoredPosition: {x: 225.42, y: -26}
+  m_SizeDelta: {x: 247.1691, y: 73.3057}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1657560843
 MonoBehaviour:
@@ -1749,7 +1749,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.35
+  m_fontSize: 30.8
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1855,7 +1855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5372549}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1916,8 +1916,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 169.8213, y: -107}
-  m_SizeDelta: {x: 306.8371, y: 98.8625}
+  m_AnchoredPosition: {x: 225.4166, y: -119.77842}
+  m_SizeDelta: {x: 247.1691, y: 73.3057}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2102471978
 MonoBehaviour:
